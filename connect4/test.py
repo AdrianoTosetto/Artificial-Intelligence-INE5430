@@ -54,6 +54,28 @@ class Connect4:
 		while not(self.make_move(next, 0)):
 			next = randint(0,6)
 		return next
+
+	def find_good_row(self):
+		i = 0
+		curr_counter = 0
+		old_counter = 0
+		better_row = 0
+		temp = ""
+		while i < 7:
+			for s in (self.list):
+				temp += str(s[i]) + " "
+				if(s[i] == 1):
+					curr_counter += 1
+				if(s[i] == 2):
+					curr_counter = 0
+					continue
+			if(curr_counter >= old_counter):
+				old_counter = curr_counter
+				better_row = i
+			i = i + 1
+			print(temp)
+			temp = ""
+		print('better row = ' + str(better_row))
 	def __str__(self):
 		i = 0
 		ret = ""
@@ -171,6 +193,7 @@ class Window:
 			self.list[ii][i].repaint()
 			QApplication.processEvents()
 		self.set_game_cells(self.connect4.list)
+		self.connect4.find_good_row()
 	def show(self):
 		self.win.show()
 		sys.exit(self.app.exec_())
