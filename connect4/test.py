@@ -86,6 +86,32 @@ class Connect4:
 			ret = ret + ('\n')
 		return ret
 
+class MinimaxNode:
+
+	def __init__(self, connect4 = None, value = None):
+		# game state
+		if connect4 is None:
+			self.connect4 = Connect4()
+		else:
+			self.connect4 = connect4
+		self.adjacents = set()
+		if value is not None:
+			self.value = value
+		else:
+			self.value = 0
+	def add_adjacent(self, node):
+		if node not in self.adjacents:
+			self.adjacents.add(node)
+	def get_adjacents(self):
+		return self.adjacents
+	def make_move(self, col, who):
+		self.connect4.make_move(col, who)
+
+	def get_connect4(self):
+		return self.connect4
+
+	def print_node(self):
+		print(self.connect4)
 
 class Window:
 	def __init__(self):
@@ -160,12 +186,6 @@ class Window:
 		if i == -1:
 			return False
 		for ii in range(0,i):
-			#self.connect4.list[col][ii] = 2
-			#self.set_game_cells(self.connect4.list)
-			#print(self.connect4)
-			
-			#self.connect4.list[col][ii] = 0
-			#self.update_game_cell(col,ii,"2")
 			self.list[ii][col].setStyleSheet('background-color: yellow')
 			self.list[ii][col].repaint()
 			QApplication.processEvents()
@@ -173,12 +193,8 @@ class Window:
 			self.list[ii][col].setStyleSheet('background-color: white')
 			self.list[ii][col].repaint()
 			QApplication.processEvents()
-			#self.update_game_cell(col,ii,"")
-			#print(ii)
-			#self.set_game_cells(self.connect4.list)
 
 		self.connect4.list[col][i] = 2
-		#self.update_game_cell(col,i,2)
 		self.set_game_cells(self.connect4.list)
 		self.computer_play()
 		print(self.connect4)
@@ -220,5 +236,15 @@ class Window:
 
 
 if __name__ == '__main__':
+	inital_node = MinimaxNode()
+	#while True:
+	#	col = int(input())
+	#	inital_node.make_move(col, 2)
+	#	for i in range(0, 7):
+	#		node = MinimaxNode(inital_node)
+	#		node.make_move(i, 1)
+	#		inital_node.add_adjacent(node)
+
+
 	window = Window()
 	window.show()

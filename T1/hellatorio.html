@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css">
+		.page-content {
+			width: 80%;
+			position: absolute;
+			left:10%;
+		}
+		p{
+			text-align: justify;
+			text-indent:4em;
+			 line-height: 1.5;
+		}
+		.front-page{
+			text-align: center;
+			position: relative;
+		}
+		.front-page{
+			height: 100%;
+			border:1px solid #CCC;
+		}
+		.front-page {
+
+		}
+		.title {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 500px;
+		}
+		pre, code {
+		  	font-family: monospace, monospace;
+		}
+		pre {
+		  	overflow: auto;
+		}
+		pre > code {
+			display: block;
+		 	padding: 1rem;
+		 	word-wrap: normal;
+		}
+		.sec {
+			border: 1px solid #CCC;
+			padding: 10px;
+			margin-bottom: 10px;
+		}
+		.intro {
+
+		}
+		strong {
+			
+		}
+		ul{
+			list-style: none;
+		}
+	</style>
+</head>
+<body>
+<div class="page-content">
+<div class="front-page sec">
+	<h4>Universidade Federal de Santa Catarina</h4>
+	<div class="title">
+		<strong>
+			Relatório - Parte 1
+		</strong>
+	</div>
+	<div class="snames">
+		<strong>Adriano Rafael Meira Tosetto - 15104099</strong>
+		<br>
+		<strong>Giulio Guilherme de Souza Simão - 15100738</strong>
+	</div>
+	<div class="date">
+		Florianópolis, 20 de março de 2018.
+	</div>
+
+</div>
+<div class="summ sec">
+	<ol>
+		<li><a href="#intro">Introdução</a></li>
+		<li><a href="#hu">Heurística e Utilidade</a></li>
+		<li><a href="#ed">Estrutura de Dados</a></li>
+		<li><a href="#otm">Otimizações</a></li>
+	</ol>
+</div>
+	<div class="intro sec" id="intro">
+		<h3>Introdução</h3>
+		<p>
+			Neste relatório iremos apresentar a heurística para o jogo Gomoku (<a href="https://pt.wikipedia.org/wiki/Gomoku">Gomoku</a>), as estruturas e dados que, possivelmente, serão usadas e algumas otimizações. Ainda há chance de mudar alguns desses tópicos na implementação final do trabalho. A linguagem escolhida será Python, devido a sua facilidade na manipulação e criação de estruturas de dados e sintaxe simples.
+
+		</p>
+	</div>
+<div class="hu sec" id="hu">
+<h3>Heurística e Utilidade</h3>
+<p>
+	Para cada peça no tabuleiro, as casas nas quatro direções são percorridas
+	procurando possíveis quíntuplas. Para cada quíntupla formada com peças jogadas ou
+	não, aumenta-se o valor de heurística para aquela configuração do tabuleiro proporcional
+	ao número de peças que formaram essa quíntupla e já foram jogadas naquela configuração.
+</p>
+<p>
+	Ao percorrer um intervalo suficientemente grande em qualquer direção, tenta-se formar uma quíntupla nesse intervalo. Ao formar uma quíntupla, o valor dela é somado ao nodo. Quando
+	forem percorridas as quatro direções e formadas todas as quíntuplas possíveis, verifica-se
+	o mesmo para a próxima peça na lista de jogadas, ignorando peças já verificadas, pois do
+	contrário causaria uma repetição na contagem das quíntuplas.
+</p>
+<figure>
+  <figcaption>Protótipo da função de varredura:</figcaption>
+  <pre>
+    <code contenteditable spellcheck="false">
+	Para x &isin; L, faça:
+		percorra(x, vertical)
+		percorra(x, horizontal)
+		percorra(x, diagonal1)
+		percorra(x, diagonal2)
+		Verificadas <- x
+	fim para
+
+	percorra(peça, direção):
+		p := peça
+		q := p
+		para i de 1 a 5, faça:
+			peças_usadas := 0
+			peças_jogadas := 0
+			se i > 1, então:
+				q := anterior(q, direção)
+				p := q
+			fim se
+			para j de 1 a 4, faça:
+				p := próxima(p, direção)
+				se p.dono = 0, então:
+					peças_usadas++
+					peças_jogadas++
+				fim se
+				se p.dono = jogador, então:
+					peças_usadas++
+				fim se
+				se p.dono = adversário ou p &isin; Verificadas, então:
+					interrompa
+				fim se
+				se peças_usadas = 4, então:
+					valorq := valor_quíntupla(peças_jogadas)
+					valorj := valor_jogador(jogador)
+					valor_heurística += valorq * valorj
+				fim se
+			fim para
+		fim para
+	fim função
+    </code>
+  </pre>
+</figure>
+<p>
+	O pseudo-código acima representa um provável algoritmo que calcula o valor de heurística
+	para um dado nodo. As funções anterior() e próximo() retornam as posições antecessora e
+	sucessora, respectivamente, de uma casa no tabuleiro, considerando a direção dada. A função
+	valor_quíntupla() calcula um valor numérico correspondente à quíntupla formada, sendo os 
+	menores	valores	retornados quando o valor de peças_jogadas for maior. A função valor_jogador simplesmente retorna uma magnitude para o valor a ser somado ao valor de heurística, sendo positivo para o computador e negativo para o jogador.
+
+	Os valores retornados por valor_quíntupla() estão a definir, pois exigem intensivo teste
+	numérico.
+</p>
+<p>
+	Ao encontrar condição de vitória garantida (como uma quadrupla de duas pontas livres ou duas triplas de duas pontas suficientemente livres), adiciona-se um valor retornado
+	pela função utilidade ao nodo.
+</p>
+</div>
+<div class="ed sec" id="ed">
+	<h3>Estruturas de Dados</h3>
+
+	<p>
+		Cada nodo do grafo de jogadas é uma lista ordenada contendo a posição de cada peça 
+		jogada e o dono da peça. Além disso, há um conjunto auxiliar de peças visitadas durante o cálculo do valor de heurística do nodo.
+	</p>
+	<h4>Estruturas que serão utilizadas</h4>
+	<ul>
+	<li><strong>Grafo:</strong> Será usado para fazer a previsão das jogadas.</li>
+	<li><strong>Lista:</strong> Será usada para encontrar possíveis quíntuplas.</li>
+	<li><strong>Conjunto:</strong>Será usado para evitar contagens duplicadas.</li>
+	</ul>
+		As estruturas serão representadas, respectivamente, por:
+	<ul>
+		<li><strong>dict</strong>,  representará o grafo</li>
+		<li><strong>list()</strong>, estrutura já presente no python, ordenada pela ordem das jogadas</li>
+		<li><strong>set()</strong>, estrutura também já presente no python</li>
+	</ul>
+	</p>
+</div>
+<div class="otm sec" id="otm">
+	<h3>Otimizações</h3>
+
+	<p>
+		Uma possível otimização seria substituir a lista de jogadas por um único par
+		de uma coordenada com um jogador, ou seja, guardar apenas o que mudou de um estado para outro. Isso diminuiria bastante a memória utilizada,
+		mas faria com que a função de varredura tivesse que percorrer o grafo em vez da
+		lista para encontrar cada peça; além disso, o grafo passaria a ser uma árvore, pois nodos com a mesma última jogada poderia ter configurações diferentes.	
+	</p>
+</div>
+
+</div>
+</body>
+</html>
