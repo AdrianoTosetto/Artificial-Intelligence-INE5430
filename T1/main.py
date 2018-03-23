@@ -16,8 +16,8 @@ if __name__ == "__main__":
 			else:
 				who = "1"
 			g.make_move(who,x,y)
-		print(g)
-		print(g.get_free_adjacents(5,5))
+			print(g)
+			print(g.get_free_adjacents(4,4))
 		batata = input()
 
 	print("Jogador " + who + " ganhou!")

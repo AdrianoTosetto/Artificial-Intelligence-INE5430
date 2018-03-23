@@ -4,11 +4,16 @@ class RawGame:
 
 	def __init__(self):
 		self.game_matrix = [[0 for _ in range(15)] for _ in range(15)]
-		self.duplas = set()
-		self.triplas = set()
-		self.quadruplas = set()
-		self.quintuplas = set()
-		self.sequencias = set()
+		self.duplas1 = set()
+		self.triplas1 = set()
+		self.quadruplas1 = set()
+		self.quintuplas1 = set()
+		self.sequencias1 = set()
+		self.duplas2 = set()
+		self.triplas2 = set()
+		self.quadruplas2 = set()
+		self.quintuplas2 = set()
+		self.sequencias2 = set()
 		self.win = False
 	def __str__(self):
 		ret = ""
@@ -35,21 +40,52 @@ class RawGame:
 		#print(self.game_matrix[x][y])
 		self.game_matrix[x][y]= str(who)
 
-		mooove = Move(who, x, y)
+		mooove = Move(0, x, y)
 
-		if mooove not in self.sequencias:
-			self.duplas.update(self.get_free_adjacents(mooove.x,mooove.y))
-		if mooove in self.duplas:
-			self.duplas.discard(self.get_free_adjacents(mooove.x,mooove.y))
-			self.triplas.update(self.get_free_adjacents(mooove.x,mooove.y))
+		print(mooove)
 
-		if mooove in self.triplas:
-			self.triplas.discard(self.get_free_adjacents(mooove.x,mooove.y))
-			self.quadruplas.update(self.get_free_adjacents(mooove.x,mooove.y))
+		if who is "1":
+			if mooove not in self.sequencias1:
+				print("sequencia")
+				self.duplas1.update(self.get_free_adjacents(mooove.x,mooove.y))
 
-		if mooove in self.quadruplas:
-			self.quadruplas.discard(self.get_free_adjacents(mooove.x,mooove.y))
-			self.quintuplas.update(self.get_free_adjacents(mooove.x,mooove.y))
+			if mooove in self.duplas1:
+				print("dupla")
+				self.triplas1.update(self.get_free_adjacents(mooove.x,mooove.y))
 
-		if mooove in self.quintuplas:
-			self.win = True
+			if mooove in self.triplas1:
+				print("tripla")
+				self.quadruplas1.update(self.get_free_adjacents(mooove.x,mooove.y))
+
+			if mooove in self.quadruplas1:
+				print("quadrupla")
+				self.quintuplas1.update(self.get_free_adjacents(mooove.x,mooove.y))
+
+			if mooove in self.quintuplas1:
+				print("quintupla")
+				self.win = True
+
+			self.sequencias1.update(self.get_free_adjacents(mooove.x,mooove.y))
+
+		if who is "2":
+			if mooove not in self.sequencias2:
+				print("sequencia")
+				self.duplas2.update(self.get_free_adjacents(mooove.x,mooove.y))
+
+			if mooove in self.duplas2:
+				print("dupla")
+				self.triplas2.update(self.get_free_adjacents(mooove.x,mooove.y))
+
+			if mooove in self.triplas2:
+				print("tripla")
+				self.quadruplas2.update(self.get_free_adjacents(mooove.x,mooove.y))
+
+			if mooove in self.quadruplas2:
+				print("quadrupla")
+				self.quintuplas2.update(self.get_free_adjacents(mooove.x,mooove.y))
+
+			if mooove in self.quintuplas2:
+				print("quintupla")
+				self.win = True
+
+			self.sequencias2.update(self.get_free_adjacents(mooove.x,mooove.y))
