@@ -36,56 +36,45 @@ class RawGame:
 			except:
 				pass
 		return ret
+
+	def has_winner(self, lastx, lasty):
+		result = self.has_winner_in_direction(lastx, lasty, 1,1)
+		result = result or self.has_winner_in_direction(lastx, lasty, 1,0)
+		result = result or self.has_winner_in_direction(lastx, lasty, 0,1)
+		result = result or self.has_winner_in_direction(lastx, lasty, 1,-1)
+		result = result or self.has_winner_in_direction(lastx, lasty, -1,-1)
+		result = result or self.has_winner_in_direction(lastx, lasty, -1,0)
+		result = result or self.has_winner_in_direction(lastx, lasty, 0,-1)
+		result = result or self.has_winner_in_direction(lastx, lasty, -1,1)
+
+		return result
+
+
+	def has_winner_in_direction(self, x, y, dx, dy):
+		who = self.game_matrix[x][y]
+
+		if who is "0":
+			return False
+
+		hw = True
+		for i in range(1, 6):
+			try:
+				if self.game_matrix[x + i * dx][y + i * dy] is not who:
+					hw = False
+					break
+			except:
+				hw = False
+				break
+				pass
+		return hw
+
 	def make_move(self, who, x, y):
 		#print(self.game_matrix[x][y])
-		self.game_matrix[x][y]= str(who)
+		self.game_matrix[x][y] = str(who)
 
-		mooove = Move(0, x, y)
+		mooove = Move(who, x, y)
 
 		print(mooove)
 
-		if who is "1":
-			if mooove not in self.sequencias1:
-				print("sequencia")
-				self.duplas1.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-			if mooove in self.duplas1:
-				print("dupla")
-				self.triplas1.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-			if mooove in self.triplas1:
-				print("tripla")
-				self.quadruplas1.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-			if mooove in self.quadruplas1:
-				print("quadrupla")
-				self.quintuplas1.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-			if mooove in self.quintuplas1:
-				print("quintupla")
-				self.win = True
-
-			self.sequencias1.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-		if who is "2":
-			if mooove not in self.sequencias2:
-				print("sequencia")
-				self.duplas2.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-			if mooove in self.duplas2:
-				print("dupla")
-				self.triplas2.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-			if mooove in self.triplas2:
-				print("tripla")
-				self.quadruplas2.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-			if mooove in self.quadruplas2:
-				print("quadrupla")
-				self.quintuplas2.update(self.get_free_adjacents(mooove.x,mooove.y))
-
-			if mooove in self.quintuplas2:
-				print("quintupla")
-				self.win = True
-
-			self.sequencias2.update(self.get_free_adjacents(mooove.x,mooove.y))
+		if self.has_winner(x,y):
+			self.win = True
