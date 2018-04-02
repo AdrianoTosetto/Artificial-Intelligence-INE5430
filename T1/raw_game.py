@@ -15,6 +15,12 @@ class RawGame:
 		self.quintuplas2 = set()
 		self.sequencias2 = set()
 		self.win = False
+		self.IA = None
+
+		self.utility = 0
+
+	def setIA(self, IA):
+		self.IA = IA
 	def __str__(self):
 		ret = ""
 		for line in self.game_matrix:
@@ -23,7 +29,7 @@ class RawGame:
 			ret = ret + "\n"
 		return ret
 
-	def get_free_adjacents(self, x, y):
+	def get_free_adjacents(self, x, y, who):
 		ret = []
 
 		nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
@@ -31,7 +37,7 @@ class RawGame:
 		for i in range(0,9):
 			try:
 				if self.game_matrix[nx[i]][ny[i]] == 0:
-					m = Move("0",nx[i], ny[i])
+					m = Move(who,nx[i], ny[i])
 					ret.append(m)
 			except:
 				pass
@@ -57,15 +63,16 @@ class RawGame:
 			return False
 
 		hw = True
-		for i in range(1, 6):
+		for i in range(1, 5):
 			try:
 				if self.game_matrix[x + i * dx][y + i * dy] is not who:
 					hw = False
 					break
 			except:
 				hw = False
-				break
 				pass
+				break
+		self.utility = 20
 		return hw
 
 	def make_move(self, who, x, y):
@@ -78,3 +85,198 @@ class RawGame:
 
 		if self.has_winner(x,y):
 			self.win = True
+
+	def find_moves(self, who, last, penultimate):
+		moves = []
+		xlast = last.x
+		ylast = last.y
+
+		xpenu = penultimate.x
+		ypenu = penultimate.y
+
+		dirx = xlast - xpenu
+		diry = ylast - ypenu
+		if dirx < -1:
+			dirx = -1
+		if dirx > 1:
+			dirx = 1
+		if diry < -1:
+			diry = -1
+		if diry > 1:
+			diry = 1
+
+		path = 1
+
+		xcurr = xlast
+		ycurr = ylast
+
+		while self.game_matrix[xcurr][ycurr] is who:
+			xcurr = xcurr + dirx * path
+			ycurr = ycurr + diry * path
+			print(xcurr)
+			print(ycurr)
+		if self.game_matrix[xcurr][ycurr] is 0:
+			move1 = Move("1", xcurr, ycurr)
+			moves = moves + [move1]
+		path = -1
+
+		xcurr = xpenu
+		ycurr = ypenu
+
+		while self.game_matrix[xcurr][ycurr] is who:
+			xcurr = xcurr + dirx * path
+			ycurr = ycurr + diry * path
+		if self.game_matrix[xcurr][ycurr] is 0:
+			move2 = Move("1", xcurr, ycurr)
+			moves = moves + [move2]
+
+		return moves
+
+	def correct_range(self, x, y):
+		if x < 0 or x > 14 or y > 14 or y < 0:
+			return False
+		return True
+	def setUtilityValue(self, node):
+		already_visited = set()
+		node_moves = node.get_moves()
+		for mov in node_moves:
+			x = mov.x
+			y = mov.y
+			player = mov.player
+			if player is "1":
+				other = "2"
+			if player is "2":
+				other = "1"
+			already_visited.add(mov)
+			nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
+			ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
+
+			piece_counter = 1
+
+			for i in range(0, 9):
+				m = Move(player, nx[i], ny[i])
+
+				if m in node_moves:
+					dirx = mov.x - nx[i]
+					diry = mov.y - ny[i]
+
+					# caso 1
+					m1_1 = Move(player, mov.x + 3*dirx, mov.y + 3*diry)
+					m2_1 = Move(player, mov.x + 2*dirx, mov.y + 2*diry)
+					m3_1 = Move(player, mov.x + dirx, mov.y + diry)
+
+					m1_1_o = Move(other, mov.x + 3*dirx, mov.y + 3*diry)
+					m2_1_o = Move(other, mov.x + 2*dirx, mov.y + 2*diry)
+					m3_1_o = Move(other, mov.x + dirx, mov.y + diry)
+
+					if not self.correct_range(m1_1.x, m1_1.y):
+						print("errou")
+					if not self.correct_range(m2_1.x, m2_1.y):
+						print("errou")
+					if not self.correct_range(m3_1.x, m3_1.y):
+						print("errou")
+
+					if m1_1 in already_visited:
+						print("visitado")
+					if m2_1 in already_visited:
+						print("visitado")
+					if m3_1 in already_visited:
+						print("visitado")
+
+					if m1_1_o in node_moves:
+						print("buu buu desu wa")
+					if m2_1_o in node_moves:
+						print("buu buu desu wa")
+					if m3_1_o in node_moves:
+						print("buu buu desu wa")
+
+					#caso 2
+					m1_2 = Move(player, mov.x + 2*dirx, mov.y + 2*diry)
+					m2_2 = Move(player, mov.x + dirx, mov.y + diry)
+					m3_2 = Move(player, nx[i] - dirx, ny[i] - diry)
+
+					m1_2_o = Move(other, mov.x + 2*dirx, mov.y + 2*diry)
+					m2_2_o = Move(other, mov.x + dirx, mov.y + diry)
+					m3_2_o = Move(other, nx[i] - dirx, ny[i] - diry)
+
+					if not self.correct_range(m1_2.x, m1_2.y):
+						print("errou")
+					if not self.correct_range(m2_2.x, m2_2.y):
+						print("errou")
+					if not self.correct_range(m3_2.x, m3_2.y):
+						print("errou")
+
+					if m1_2 in already_visited:
+						print("visitado")
+					if m2_2 in already_visited:
+						print("visitado")
+					if m3_2 in already_visited:
+						print("visitado")
+
+					if m1_2_o in node_moves:
+						print("buu buu desu wa")
+					if m2_2_o in node_moves:
+						print("buu buu desu wa")
+					if m3_2_o in node_moves:
+						print("buu buu desu wa")
+
+					#caso 3
+					m1_3 = Move(player, mov.x + dirx, mov.y + diry)
+					m2_3 = Move(player, nx[i] - dirx, ny[i] - diry)
+					m3_3 = Move(player, nx[i] - 2*dirx, ny[i] - 2*diry)
+
+					m1_3_o = Move(other, mov.x + dirx, mov.y + diry)
+					m2_3_o = Move(other, nx[i] - dirx, ny[i] - diry)
+					m3_3_o = Move(other, nx[i] - 2*dirx, ny[i] - 2*diry)
+
+					if not self.correct_range(m1_3.x, m1_3.y):
+						print("errou")
+					if not self.correct_range(m2_3.x, m2_3.y):
+						print("errou")
+					if not self.correct_range(m3_3.x, m3_3.y):
+						print("errou")
+
+					if m1_3 in already_visited:
+						print("visitado")
+					if m2_3 in already_visited:
+						print("visitado")
+					if m3_3 in already_visited:
+						print("visitado")
+
+					if m1_3_o in node_moves:
+						print("buu buu desu wa")
+					if m2_3_o in node_moves:
+						print("buu buu desu wa")
+					if m3_3_o in node_moves:
+						print("buu buu desu wa")
+
+					#caso 4
+
+					m1_4 = Move(player, nx[i] - dirx, ny[i] - diry)
+					m2_4 = Move(player, nx[i] - 2*dirx, ny[i] - 2*diry)
+					m3_4 = Move(player, nx[i] - 3*dirx, ny[i] - 3*diry)
+
+					m1_4_o = Move(other, nx[i] - dirx, ny[i] - diry)
+					m2_4_o = Move(other, nx[i] - 2*dirx, ny[i] - 2*diry)
+					m3_4_o = Move(other, nx[i] - 3*dirx, ny[i] - 3*diry)
+
+					if not self.correct_range(m1_4.x, m1_4.y):
+						print("errou")
+					if not self.correct_range(m2_4.x, m2_4.y):
+						print("errou")
+					if not self.correct_range(m3_4.x, m3_4.y):
+						print("errou")
+
+					if m1_4 in already_visited:
+						print("visitado")
+					if m2_4 in already_visited:
+						print("visitado")
+					if m3_4 in already_visited:
+						print("visitado")
+
+					if m1_4_o in node_moves:
+						print("buu buu desu wa")
+					if m2_4_o in node_moves:
+						print("buu buu desu wa")
+					if m3_4_o in node_moves:
+						print("buu buu desu wa")

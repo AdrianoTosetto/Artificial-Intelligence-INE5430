@@ -1,17 +1,48 @@
 from move import Move
+import random
+import globals
+
+# as arveres somos nozes
 
 class Tree:
 
-	def __init__(self):
-		self.nodes = []
+	def __init__(self, initialNode):
+		self.father = initialNode
+		self.current_game_matrix = [[0 for _ in range(15)] for _ in range(15)]
+		centerx = set([4,5,6,7,8,9,10])
+		centery = set([4,5,6,7,8,9,10])
+		sX = self.father.get_moves()[0].x
+		sY = self.father.get_moves()[0].y
+		sorroundx = set([sX - 4, sX - 3, sX - 2, sX - 1, sX + 1, sX + 2, sX + 3, sX + 4])
+		sorroundy = set([sY - 4, sY - 3, sY - 2, sY - 1, sY + 1, sY + 2, sY + 3, sY + 4])
+		interx = centerx & sorroundx
+		intery = centery & sorroundy
+		x = random.sample(interx,1)[0]
+		y = random.sample(intery,1)[0]
+		mooove = Move(2, x, y)
+		self.father.set_moves([mooove])
+		nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
+		ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
 
+		for i in range(0,9):
+			try:
+				m = Move("2", nx[i], ny[i])
+				node = Node(self.father.get_moves() + [m])
+				self.father.add_adj(node)
+			except:
+				pass
 
+		self.father.add_move(mooove)
+		print(mooove)
 
+	def next(self, move):
+		print()
 
 class Node:
 
 	def __init__(self, moves=None):
 		self.adjs = []
+		self.father = None
 		if moves is None:
 			self.moves = []
 		else:
@@ -20,10 +51,54 @@ class Node:
 	def get_moves(self):
 		return self.moves
 
+	def set_moves(self, moves):
+		self.moves = moves
+
+	def add_move(self, move):
+		self.moves.append(move)
+
 	def set_adjs(self, adjs):
 		self.adjs = adjs
+		for adj in adjs:
+			adj.set_father(self)
+
+	def set_father(self, father):
+		self.father = father
+
+	def add_adj(self, adj):
+		self.adjs.append(adj)
+		adj.set_father(self)
+
 	def get_adjs(self):
 		return self.adjs
+
+	def last_move_adjs(self):
+		last_move = self.moves[-1]
+		last_last_move = self.moves[-2]
+		x = last_move.x
+		y = last_move.y
+		dirx = x - last_last_move.x
+		diry = y - last_last_move.y
+		nx = x
+		ny = y
+		node1 = Node("2", x + dirx, y + diry)
+		node2 = Node("2", x + dirx, y + diry)
+		while node2.player is "2":
+			nx = 0
+		nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
+		ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
+		ret = []
+		for i in range(0,9):
+			try:
+				m = Move("2", nx[i], ny[i])
+				print(m)
+				node = Node(self.get_moves() + [m])
+				ret.append(node)
+			except:
+				pass
+		self.set_adjs(ret)
+		return ret
+
 	def __str__(self):
 		return self.moves.__str__()
 	def depth_search_first(self):
