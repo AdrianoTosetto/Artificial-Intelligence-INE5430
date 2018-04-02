@@ -9,6 +9,7 @@ class Tree:
 	def __init__(self, initialNode):
 		self.father = initialNode
 		self.current_game_matrix = [[0 for _ in range(15)] for _ in range(15)]
+		'''
 		centerx = set([4,5,6,7,8,9,10])
 		centery = set([4,5,6,7,8,9,10])
 		sX = self.father.get_moves()[0].x
@@ -34,6 +35,7 @@ class Tree:
 
 		self.father.add_move(mooove)
 		print(mooove)
+		'''
 
 	def next(self, move):
 		print()
@@ -41,6 +43,8 @@ class Tree:
 class Node:
 
 	def __init__(self, moves=None):
+		self.alpha = -1 * float("inf")
+		self.beta = float("inf")
 		self.adjs = []
 		self.father = None
 		if moves is None:
@@ -50,6 +54,16 @@ class Node:
 
 	def get_moves(self):
 		return self.moves
+
+	def get_alpha(self):
+		return self.alpha
+	def get_beta(self):
+		return self.beta
+
+	def set_alpha(self, alpha):
+		self.alpha = alpha
+	def set_beta(self, beta):
+		self.beta = beta
 
 	def set_moves(self, moves):
 		self.moves = moves
