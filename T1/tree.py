@@ -1,4 +1,4 @@
-from move import Move
+import move
 import random
 import globals
 

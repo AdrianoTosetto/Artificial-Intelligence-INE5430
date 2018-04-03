@@ -158,6 +158,7 @@ class RawGame:
 				other = "2"
 			if player is "2":
 				other = "1"
+			print(mov)
 			already_visited.add(mov)
 			nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
 			ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]

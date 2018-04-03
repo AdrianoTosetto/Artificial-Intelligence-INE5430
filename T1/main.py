@@ -1,8 +1,5 @@
-from tree import Node
-from move import Move
-from random import randint
-from raw_game import RawGame
-from tree import Tree
+import tree
+import move
 import random
 
 if __name__ == "__main__":
