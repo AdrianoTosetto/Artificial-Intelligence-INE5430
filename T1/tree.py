@@ -1,4 +1,4 @@
-import move
+from move import Move
 import random
 import globals
 
@@ -113,7 +113,7 @@ class Node:
 		self.set_adjs(ret)
 		return ret
 
-	def find_adjacentrs(self, who, x, y):
+	def find_adjacents(self, who, x, y):
 
 		nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
 		ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
@@ -126,6 +126,65 @@ class Node:
 			if m in moves:
 				ret.append(m)
 		return ret
+
+	def find_moves(self, who, last, penultimate, player):
+		list_moves = self.moves
+		moves = set()
+		xlast = last.x
+		ylast = last.y
+
+		xpenu = penultimate.x
+		ypenu = penultimate.y
+
+		dirx = xlast - xpenu
+		diry = ylast - ypenu
+		if dirx < -1:
+			dirx = -1
+		if dirx > 1:
+			dirx = 1
+		if diry < -1:
+			diry = -1
+		if diry > 1:
+			diry = 1
+
+		path = 1
+
+		xcurr = xlast
+		ycurr = ylast
+
+		while Move(who, xcurr, ycurr) in list_moves:
+			xcurr = xcurr + dirx * path
+			ycurr = ycurr + diry * path
+			#print(xcurr)
+			#print(ycurr)
+		if ((Move("1", xcurr, ycurr) not in list_moves) or
+			(Move("2", xcurr, ycurr) not in list_moves)) and (xcurr > -1 and xcurr < 15 and ycurr > -1 and ycurr < 15):
+			move1 = Move(player, xcurr, ycurr)
+			moves.add(move1)
+		path = -1
+
+		xcurr = xpenu
+		ycurr = ypenu
+
+		while Move(who, xcurr, ycurr) in list_moves:
+			xcurr = xcurr + dirx * path
+			ycurr = ycurr + diry * path
+		if ((Move("1", xcurr, ycurr) not in list_moves) or
+			(Move("2", xcurr, ycurr) not in list_moves)) and (xcurr > -1 and xcurr < 15 and ycurr > -1 and ycurr < 15):
+			move2 = Move(player, xcurr, ycurr)
+			moves.add(move2)
+
+		#
+		if len(moves) == 0:
+
+			nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
+			ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
+
+			m = Move(who, random.sample(nx, 1)[0], random.sample(ny, 1)[0])
+
+			moves.add(m)
+
+		return moves
 
 	def __str__(self):
 		return self.moves.__str__()
