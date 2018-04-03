@@ -1,6 +1,3 @@
-from typing import NamedTuple
+from collections import namedtuple
 
-class Move(NamedTuple):
-    player: str
-    x: int
-    y: int
+Move = namedtuple('Move', ['player', 'x', 'y'])

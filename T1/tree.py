@@ -113,6 +113,20 @@ class Node:
 		self.set_adjs(ret)
 		return ret
 
+	def find_adjacentrs(self, who, x, y):
+
+		nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
+		ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
+		ret = []
+
+		moves = self.get_moves()
+
+		for i in range(0,8):
+			m = Move(who, nx[i], ny[i])
+			if m in moves:
+				ret.append(m)
+		return ret
+
 	def __str__(self):
 		return self.moves.__str__()
 	def depth_search_first(self):

@@ -86,7 +86,7 @@ class RawGame:
 		if self.has_winner(x,y):
 			self.win = True
 
-	def find_moves(self, who, last, penultimate):
+	def find_moves(self, who, last, penultimate, player):
 		moves = []
 		xlast = last.x
 		ylast = last.y
@@ -116,7 +116,7 @@ class RawGame:
 			#print(xcurr)
 			#print(ycurr)
 		if self.game_matrix[xcurr][ycurr] is 0:
-			move1 = Move("1", xcurr, ycurr)
+			move1 = Move(player, xcurr, ycurr)
 			moves = moves + [move1]
 		path = -1
 
@@ -127,7 +127,7 @@ class RawGame:
 			xcurr = xcurr + dirx * path
 			ycurr = ycurr + diry * path
 		if self.game_matrix[xcurr][ycurr] is 0:
-			move2 = Move("1", xcurr, ycurr)
+			move2 = Move(player, xcurr, ycurr)
 			moves = moves + [move2]
 
 		return moves
@@ -137,7 +137,7 @@ class RawGame:
 			return False
 		return True
 
-	def emitUValue(npieces):
+	def emitUValue(self, npieces):
 		if npieces == 2:
 			return 1
 		if npieces == 3:
@@ -165,7 +165,7 @@ class RawGame:
 
 			piece_counter = 2
 
-			for i in range(0, 9):
+			for i in range(0, 8):
 				m = Move(player, nx[i], ny[i])
 
 				if m in node_moves:
@@ -198,9 +198,9 @@ class RawGame:
 						m2_1_o in node_moves or
 						m3_1_o in node_moves)):
 						if player == "2":
-							utility = utility + emitUValue(piece_counter)
+							utility = utility + self.emitUValue(piece_counter)
 						if player == "1":
-							utility = utility - emitUValue(piece_counter)
+							utility = utility - self.emitUValue(piece_counter)
 
 					piece_counter = 2
 
@@ -230,9 +230,9 @@ class RawGame:
 						m2_2_o in node_moves or
 						m3_2_o in node_moves)):
 						if player == "2":
-							utility = utility + emitUValue(piece_counter)
+							utility = utility + self.emitUValue(piece_counter)
 						if player == "1":
-							utility = utility - emitUValue(piece_counter)
+							utility = utility - self.emitUValue(piece_counter)
 
 					piece_counter = 2
 					#caso 3
@@ -261,9 +261,9 @@ class RawGame:
 						m2_3_o in node_moves or
 						m3_3_o in node_moves)):
 						if player == "2":
-							utility = utility + emitUValue(piece_counter)
+							utility = utility + self.emitUValue(piece_counter)
 						if player == "1":
-							utility = utility - emitUValue(piece_counter)
+							utility = utility - self.emitUValue(piece_counter)
 
 					piece_counter = 2
 
@@ -294,8 +294,8 @@ class RawGame:
 						m2_4_o in node_moves or
 						m3_4_o in node_moves)):
 						if player == "2":
-							utility = utility + emitUValue(piece_counter)
+							utility = utility + self.emitUValue(piece_counter)
 						if player == "1":
-							utility = utility - emitUValue(piece_counter)
+							utility = utility - self.emitUValue(piece_counter)
 		if node.get_alpha() < utility:
 			node.set_alpha(utility)

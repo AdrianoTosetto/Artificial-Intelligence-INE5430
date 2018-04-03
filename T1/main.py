@@ -1,5 +1,8 @@
-import tree
-import move
+from tree import Node
+from move import Move
+from random import randint
+from raw_game import RawGame
+from tree import Tree
 import random
 
 if __name__ == "__main__":
@@ -46,7 +49,13 @@ if __name__ == "__main__":
 				m = Move(who,x,y)
 				first_five_moves.append(m)
 
-			
+			else:
+				possible_moves = set()
+				mvs = curr_node.get_moves()
+				for m in mvs:
+					if m.player is "2":
+						possible_moves.add(g.find_moves("2", ))
+
 			'''
 			else:
 				
@@ -99,7 +108,7 @@ if __name__ == "__main__":
 					cm = curr_node.get_moves()
 					cm.append(m)
 					curr_node.add_adj(Node(cm))
-					curr_node = get_adjs()[0]
+					curr_node = curr_node.get_adjs()[0]
 		print(g)
 
 	print("Jogador " + who + " ganhou!")
