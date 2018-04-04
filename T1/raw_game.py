@@ -132,12 +132,12 @@ class RawGame:
 
 		return moves
 
-	def correct_range(self, x, y):
+	'''def correct_range(self, x, y):
 		if x < 0 or x > 14 or y > 14 or y < 0:
 			return False
-		return True
+		return True'''
 
-	def emitUValue(self, npieces):
+	'''def emitUValue(self, npieces):
 		if npieces == 2:
 			return 1
 		if npieces == 3:
@@ -298,4 +298,4 @@ class RawGame:
 						if player == "1":
 							utility = utility - self.emitUValue(piece_counter)
 		if node.get_alpha() < utility:
-			node.set_alpha(utility)
+			node.set_alpha(utility)'''

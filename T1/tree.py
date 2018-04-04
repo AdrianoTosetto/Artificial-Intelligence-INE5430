@@ -105,7 +105,7 @@ class Node:
 		for i in range(0,9):
 			try:
 				m = Move("2", nx[i], ny[i])
-				print(m)
+				#print(m)
 				node = Node(self.get_moves() + [m])
 				ret.append(node)
 			except:
@@ -126,6 +126,8 @@ class Node:
 			if m in moves:
 				ret.append(m)
 		return ret
+
+	# possiveis movimentos adjacentes
 
 	def find_moves(self, who, last, penultimate, player):
 		list_moves = self.moves
@@ -174,7 +176,8 @@ class Node:
 			move2 = Move(player, xcurr, ycurr)
 			moves.add(move2)
 
-		#
+		x = last.x
+		y = last.y
 		if len(moves) == 0:
 
 			nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
@@ -185,6 +188,40 @@ class Node:
 			moves.add(m)
 
 		return moves
+	#gilui eh um bbk
+	def populate(self, levels):
+		if levels == 0:
+			self.setUtilityValue() 
+			return self.get_alpha()
+		moves = self.get_moves()
+		alpha = 0
+
+		for m in moves:
+			if m.player is "2":
+				adjs = self.find_adjacents("2", m.x, m.y)
+				for adj in adjs:
+					possible_moves2 = self.find_moves("2", m, adj, "1")
+					for pos in possible_moves2:
+						self.add_adj(Node(moves + [pos]))
+						#print("addou")
+			if m.player is "1":
+				adjs = self.find_adjacents("1", m.x, m.y)
+				for adj in adjs:
+					possible_moves1 = self.find_moves("1", m, adj, "1")
+					for pos in possible_moves1:
+						self.add_adj(Node(moves + [pos]))
+
+		adnodes = self.get_adjs()
+
+		#print("levels")
+		#print(levels)
+
+		for adnode in adnodes:
+			alpha += adnode.populate(levels-1)
+
+		print("alpha:")
+		print(alpha)
+		return alpha
 
 	def __str__(self):
 		return self.moves.__str__()
@@ -195,7 +232,178 @@ class Node:
 			vertex = stack.pop()
 
 			if vertex not in visited:
-				print(vertex)
+				#print(vertex)
 				visited.add(vertex)
 				stack.extend(set(vertex.get_adjs()) - visited)
 		return list(visited)
+
+	def correct_range(self, x, y):
+		if x < 0 or x > 14 or y > 14 or y < 0:
+			return False
+		return True
+
+	def emitUValue(self, npieces):
+		if npieces == 2:
+			return 1
+		if npieces == 3:
+			return 5
+		if npieces == 4:
+			return 15
+		if npieces == 5:
+			return 100
+		#print('deu merda')
+		return 0
+
+	def setUtilityValue(self):
+		already_visited = set()
+		utility = 0
+		node_moves = self.get_moves()
+		for mov in node_moves:
+			x = mov.x
+			y = mov.y
+			player = mov.player
+			if player is "1":
+				other = "2"
+			if player is "2":
+				other = "1"
+			#print(mov)
+			already_visited.add(mov)
+			nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
+			ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
+
+			piece_counter = 2
+
+			for i in range(0, 8):
+				m = Move(player, nx[i], ny[i])
+
+				if m in node_moves:
+					dirx = mov.x - nx[i]
+					diry = mov.y - ny[i]
+
+					# caso 1
+					m1_1 = Move(player, mov.x + 3*dirx, mov.y + 3*diry)
+					m2_1 = Move(player, mov.x + 2*dirx, mov.y + 2*diry)
+					m3_1 = Move(player, mov.x + dirx, mov.y + diry)
+
+					m1_1_o = Move(other, mov.x + 3*dirx, mov.y + 3*diry)
+					m2_1_o = Move(other, mov.x + 2*dirx, mov.y + 2*diry)
+					m3_1_o = Move(other, mov.x + dirx, mov.y + diry)
+
+					if m1_1 in node_moves:
+						piece_counter = piece_counter + 1
+					if m2_1 in node_moves:
+						piece_counter = piece_counter + 1
+					if m3_1 in node_moves:
+						piece_counter = piece_counter + 1
+
+					if ((self.correct_range(m1_1.x, m1_1.y) and
+						self.correct_range(m2_1.x, m2_1.y) and
+						self.correct_range(m3_1.x, m3_1.y)) and
+						not (m1_1 in already_visited or
+						m2_1 in already_visited or
+						m3_1 in already_visited or
+						m1_1_o in node_moves or
+						m2_1_o in node_moves or
+						m3_1_o in node_moves)):
+						if player == "2":
+							utility = utility + self.emitUValue(piece_counter)
+						elif player == "1":
+							utility = utility - self.emitUValue(piece_counter)
+
+					piece_counter = 2
+
+					#caso 2
+					m1_2 = m2_1
+					m2_2 = m3_1
+					m3_2 = Move(player, nx[i] - dirx, ny[i] - diry)
+
+					m1_2_o = m2_1_o
+					m2_2_o = m3_1_o
+					m3_2_o = Move(other, nx[i] - dirx, ny[i] - diry)
+
+					if m1_2 in node_moves:
+						piece_counter = piece_counter + 1
+					if m2_2 in node_moves:
+						piece_counter = piece_counter + 1
+					if m3_2 in node_moves:
+						piece_counter = piece_counter + 1
+
+					if ((self.correct_range(m1_2.x, m1_2.y) and
+						self.correct_range(m2_2.x, m2_2.y) and
+						self.correct_range(m3_2.x, m3_2.y)) and
+						not (m1_2 in already_visited or
+						m2_2 in already_visited or
+						m3_2 in already_visited or
+						m1_2_o in node_moves or
+						m2_2_o in node_moves or
+						m3_2_o in node_moves)):
+						if player == "2":
+							utility = utility + self.emitUValue(piece_counter)
+						if player == "1":
+							utility = utility - self.emitUValue(piece_counter)
+
+					piece_counter = 2
+					#caso 3
+					m1_3 = m2_2
+					m2_3 = m3_2
+					m3_3 = Move(player, nx[i] - 2*dirx, ny[i] - 2*diry)
+
+					m1_3_o = m2_2_o
+					m2_3_o = m3_2_o
+					m3_3_o = Move(other, nx[i] - 2*dirx, ny[i] - 2*diry)
+
+					if m1_3 in node_moves:
+						piece_counter = piece_counter + 1
+					if m2_3 in node_moves:
+						piece_counter = piece_counter + 1
+					if m3_3 in node_moves:
+						piece_counter = piece_counter + 1
+
+					if ((self.correct_range(m1_3.x, m1_3.y) and
+						self.correct_range(m2_3.x, m2_3.y) and
+						self.correct_range(m3_3.x, m3_3.y)) and
+						not (m1_3 in already_visited or
+						m2_3 in already_visited or
+						m3_3 in already_visited or
+						m1_3_o in node_moves or
+						m2_3_o in node_moves or
+						m3_3_o in node_moves)):
+						if player == "2":
+							utility = utility + self.emitUValue(piece_counter)
+						if player == "1":
+							utility = utility - self.emitUValue(piece_counter)
+
+					piece_counter = 2
+
+					#caso 4
+
+					m1_4 = m2_3
+					m2_4 = m3_3
+					m3_4 = Move(player, nx[i] - 3*dirx, ny[i] - 3*diry)
+
+					m1_4_o = m2_3_o
+					m2_4_o = m3_3_o
+					m3_4_o = Move(other, nx[i] - 3*dirx, ny[i] - 3*diry)
+
+					if m1_4 in node_moves:
+						piece_counter = piece_counter + 1
+					if m2_4 in node_moves:
+						piece_counter = piece_counter + 1
+					if m3_4 in node_moves:
+						piece_counter = piece_counter + 1
+
+					if ((self.correct_range(m1_4.x, m1_4.y) and
+						self.correct_range(m2_4.x, m2_4.y) and
+						self.correct_range(m3_4.x, m3_4.y)) and
+						not (m1_4 in already_visited or
+						m2_4 in already_visited or
+						m3_4 in already_visited or
+						m1_4_o in node_moves or
+						m2_4_o in node_moves or
+						m3_4_o in node_moves)):
+						if player == "2":
+							utility = utility + self.emitUValue(piece_counter)
+						if player == "1":
+							utility = utility - self.emitUValue(piece_counter)
+		if self.get_alpha() < utility:
+			self.set_alpha(utility)

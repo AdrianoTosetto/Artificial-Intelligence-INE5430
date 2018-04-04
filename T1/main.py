@@ -52,7 +52,24 @@ if __name__ == "__main__":
 				first_five_moves.append(m)
 
 			else:
-				possible_moves = set()
+				curr_node.populate(2)
+				chosen_nodes = curr_node.get_adjs()
+				min_alpha = -1 * float("inf")
+				possible_nodes = []
+				print("minalpha=")
+				print(min_alpha)
+				for cadj in chosen_nodes:
+					if cadj.get_alpha() == min_alpha:
+						possible_nodes = possible_nodes + [cadj]
+					if cadj.get_alpha() > min_alpha:
+						min_alpha = cadj.get_alpha()
+						possible_nodes = [cadj]
+						print("BerhaBs")
+				chosen_node = random.sample(possible_nodes,1)[0]
+				curr_node = chosen_node
+				x = curr_node.get_moves()[-1].x
+				y = curr_node.get_moves()[-1].y
+				'''possible_moves = set()
 				possible_moves1 = set()
 				adnodes1 = curr_node.get_adjs()
 				for adnode1 in adnodes1:
@@ -69,7 +86,9 @@ if __name__ == "__main__":
 								possible_moves = possible_moves | adnode1.find_moves("1", m, adj, "1")
 					for l in possible_moves:
 						adnode1.add_adj(Node(mvs + [l]))
-						levels+=1
+						levels+=1for cadj in chosen_nodes:
+					if cadj.get_alpha() > chosen_node.get_alpha():
+						chosen_node = cadj
 					adnodes2 = adnode1.get_adjs()
 
 					for adnode2 in adnodes2:
@@ -106,39 +125,14 @@ if __name__ == "__main__":
 				actual_move = curr_node.get_moves()[-1]
 				x = actual_move.x
 				y = actual_move.y
-
-
-			'''
-			else:
-				
-				last_move   = randomsplays.get_moves()[-1]
-				penultimate = randomsplays.get_moves()[-2]
-				print(randomsplays.get_moves())
-
-				moves = g.find_moves(who, last_move, penultimate)
-				if len(moves) == 0:
-					print("vish")
-					rmove = random.sample(g.get_free_adjacents(last_move.x, last_move.y, who),1)[0]
-					adjs3 = Node(randomsplays.get_moves() + [rmove])
-					randomsplays.add_adj(adjs3)
-				else:
-					adjs1 = Node(randomsplays.get_moves() + [moves[0]])
-					randomsplays.add_adj(adjs1)
-					try:
-						adjs2 = Node(randomsplays.get_moves() + [moves[1]])
-						randomsplays.add_adj(adjs2)
-					except:
-						pass
-				randomsplays = random.sample(randomsplays.get_adjs(), 1)[0]
-				smove = randomsplays.get_moves()[len(randomsplays.get_moves())-1]
-				x = smove.x
-				y = smove.y
 			'''
 				
 
 
 			if g.game_matrix[x][y] is 0:
 				g.make_move(who,x,y)
+			else:
+				who="1"
 		else:
 			who = "1"
 			y = int(input())
@@ -153,11 +147,11 @@ if __name__ == "__main__":
 					father = Node(first_five_moves)
 					tree = Tree(father)
 					curr_node = father
-					g.setUtilityValue(father)
+					father.setUtilityValue()
 					print("ALPHA=")
 					print(father.get_alpha())
 
-					possible_moves = set()
+					'''possible_moves = set()
 					mvs = curr_node.get_moves()
 					for m in mvs:
 						if m.player is "2":
@@ -170,12 +164,22 @@ if __name__ == "__main__":
 								possible_moves = possible_moves | curr_node.find_moves("1", m, adj, "2")
 					for l in possible_moves:
 						father.add_adj(Node(first_five_moves + [l]))
-						levels=1
+						levels=1'''
 				else:
 					cm = curr_node.get_moves()
 					cm.append(m)
-					curr_node.add_adj(Node(cm))
-					curr_node = curr_node.get_adjs()[0]
+					next_node = None
+					old_curr = curr_node
+					for nds in curr_node.get_adjs():
+						next_node = nds
+						if nds.get_moves()[-1] == m:
+							curr_node = nds
+							break
+					if old_curr == curr_node:
+						next_node = Node(cm)
+						curr_node.add_adj(next_node)
+						curr_node = next_node
+						
 		g.win = g.has_winner(x,y)
 		print(g)
 
