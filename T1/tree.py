@@ -9,7 +9,7 @@ class Tree:
 	def __init__(self, initialNode):
 		self.father = initialNode
 		self.current_game_matrix = [[0 for _ in range(15)] for _ in range(15)]
-		self.father.set_maximizing(1)
+		self.father.set_maximizing(True)
 
 class Node:
 
@@ -61,12 +61,12 @@ class Node:
 		self.adjs = adjs
 		for adj in adjs:
 			adj.set_father(self)
-			adj.set_maximizing((self.is_maximizing() + 1) % 2)
+			adj.set_maximizing(not(self.is_maximizing()))
 
 	def add_adj(self, adj):
 		self.adjs.append(adj)
 		adj.set_father(self)
-		adj.set_maximizing((self.is_maximizing() + 1) % 2)
+		adj.set_maximizing(not(self.is_maximizing()))
 
 	def get_adjs(self):
 		return self.adjs
@@ -226,7 +226,7 @@ class Node:
 			for node in self.get_adjs():
 				v = max(v, node.pruning(levels-1,alpha,beta))
 				alpha = max(v, alpha)
-				if beta >= alpha:
+				if beta <= alpha:
 					break
 			self.set_heuristic(v)
 			return v
@@ -235,7 +235,7 @@ class Node:
 			for node in self.get_adjs():
 				v = min(v, node.pruning(levels-1,alpha,beta))
 				beta = min(v, beta)
-				if beta >= alpha:
+				if beta <= alpha:
 					break
 			self.set_heuristic(v)
 			return v
@@ -260,13 +260,13 @@ class Node:
 
 	def emitUValue(self, npieces):
 		if npieces == 2:
-			return 20
+			return 5
 		if npieces == 3:
-			return 100
+			return 2500
 		if npieces == 4:
-			return 500
+			return 1250000
 		if npieces == 5:
-			return 50000
+			return 125000000000000
 		return 1
 
 	def setUtilityValue(self):
@@ -320,10 +320,10 @@ class Node:
 						m3_1_o in node_moves)):
 						if player == "2":
 						#	print("+valor")
-							utility = utility + self.emitUValue(piece_counter)
+							utility = utility + self.emitUValue(piece_counter) * 5000
 						elif player == "1":
 							#print("-valor")
-							utility = utility - self.emitUValue(piece_counter) * 1.5
+							utility = utility - self.emitUValue(piece_counter)
 
 					piece_counter = 2
 
@@ -354,10 +354,10 @@ class Node:
 						m3_2_o in node_moves)):
 						if player == "2":
 						#	print("+valor")
-							utility = utility + self.emitUValue(piece_counter)
+							utility = utility + self.emitUValue(piece_counter) * 5000
 						elif player == "1":
 							#print("-valor")
-							utility = utility - self.emitUValue(piece_counter) * 1.5
+							utility = utility - self.emitUValue(piece_counter)
 
 					piece_counter = 2
 					#caso 3
@@ -387,10 +387,10 @@ class Node:
 						m3_3_o in node_moves)):
 						if player == "2":
 							#print("+valor")
-							utility = utility + self.emitUValue(piece_counter)
+							utility = utility + self.emitUValue(piece_counter) * 5000
 						elif player == "1":
 							#print("-valor")
-							utility = utility - self.emitUValue(piece_counter) * 1.5
+							utility = utility - self.emitUValue(piece_counter)
 
 					piece_counter = 2
 
@@ -422,8 +422,8 @@ class Node:
 						m3_4_o in node_moves)):
 						if player == "2":
 							#print("+valor")
-							utility = utility + self.emitUValue(piece_counter)
+							utility = utility + self.emitUValue(piece_counter) * 5000
 						elif player == "1":
 							#print("-valor")
-							utility = utility - self.emitUValue(piece_counter)# * 1.5
+							utility = utility - self.emitUValue(piece_counter)
 		self.set_heuristic(utility)
