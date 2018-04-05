@@ -4,9 +4,22 @@ from random import randint
 from raw_game import RawGame
 from tree import Tree
 import random
+from layout import GameLayout
+from PyQt5.QtWidgets import QApplication
+import sys
+from threading import Thread
+
+
+gl = None
+def func():
+	app = QApplication(sys.argv)
+	global gl
+	gl = GameLayout()
+	sys.exit(app.exec_())
+
 
 if __name__ == "__main__":
-
+	Thread(target=func).start()
 	g = RawGame()
 	who = "2"
 	first = True
@@ -53,6 +66,7 @@ if __name__ == "__main__":
 				if g.game_matrix[x][y] is 0:
 					#print("joguei")
 					g.make_move(who,x,y)
+					gl.make_move(x, y)
 					loop_desperate_measure = 0
 					first = False
 					second = True
@@ -70,6 +84,7 @@ if __name__ == "__main__":
 				if g.game_matrix[x][y] is 0:
 					#print("joguei")
 					g.make_move(who,x,y)
+					gl.make_move(x, y)
 					loop_desperate_measure = 0
 					second = False
 				else:
@@ -98,6 +113,7 @@ if __name__ == "__main__":
 				if g.game_matrix[x][y] is 0:
 					#print("joguei")
 					g.make_move(who,x,y)
+					gl.make_move(x, y)
 					loop_desperate_measure = 0
 				else:
 					print("A IA está pensando...")
@@ -107,12 +123,16 @@ if __name__ == "__main__":
 					continue
 
 		else:
+			if gl is None:
+				continue
+			if not(gl.canPlay[0]):
+				continue
 			who = "1"
 			print("Faça sua jogada!")
 			print("X:")
-			y = int(input()) - 1
+			y = gl.lastYPlayed[0]
 			print("Y:")
-			x = 15 - int(input())
+			x = gl.lastXPlayed[0]
 			m = Move(who, x, y)
 			if g.game_matrix[x][y] is 0:
 				g.make_move(who,x,y)
@@ -140,6 +160,7 @@ if __name__ == "__main__":
 						next_node = Node(cm)
 						curr_node.add_adj(next_node)
 						curr_node = curr_node.get_adjs()[-1]
+				gl.canPlay[0] = False
 			else:
 				who = "2"
 				continue
