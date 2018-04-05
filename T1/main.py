@@ -26,7 +26,6 @@ if __name__ == "__main__":
 			who = "2"
 
 			if first:
-				#print("First")
 				centerx = set([4,5,6,7,8,9,10])
 				centery = set([4,5,6,7,8,9,10])
 				sorroundx = set([x - 4, x - 3, x - 2, x - 1, x + 1, x + 2, x + 3, x + 4])
@@ -50,7 +49,6 @@ if __name__ == "__main__":
 					continue
 
 			elif second:
-				#print("Second")
 				x = random.sample(nx,1)[0]
 				y = random.sample(ny,1)[0]
 				m = Move(who,x,y)
@@ -65,7 +63,6 @@ if __name__ == "__main__":
 					continue
 
 			else:
-				#print("pau no cu do first")
 				curr_node.populate(2)
 				curr_node.pruning(2, -1 * float("inf"), float("inf"))
 				chosen_nodes = curr_node.get_adjs()
@@ -95,7 +92,7 @@ if __name__ == "__main__":
 			print("X:")
 			y = int(input()) - 1
 			print("Y:")
-			x = int(input()) - 1
+			x = 15 - int(input())
 			m = Move(who, x, y)
 			if g.game_matrix[x][y] is 0:
 				g.make_move(who,x,y)

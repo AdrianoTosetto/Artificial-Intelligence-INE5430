@@ -10,36 +10,6 @@ class Tree:
 		self.father = initialNode
 		self.current_game_matrix = [[0 for _ in range(15)] for _ in range(15)]
 		self.father.set_maximizing(1)
-		'''
-		centerx = set([4,5,6,7,8,9,10])
-		centery = set([4,5,6,7,8,9,10])
-		sX = self.father.get_moves()[0].x
-		sY = self.father.get_moves()[0].y
-		sorroundx = set([sX - 4, sX - 3, sX - 2, sX - 1, sX + 1, sX + 2, sX + 3, sX + 4])
-		sorroundy = set([sY - 4, sY - 3, sY - 2, sY - 1, sY + 1, sY + 2, sY + 3, sY + 4])
-		interx = centerx & sorroundx
-		intery = centery & sorroundy
-		x = random.sample(interx,1)[0]
-		y = random.sample(intery,1)[0]
-		mooove = Move(2, x, y)
-		self.father.set_moves([mooove])
-		nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
-		ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
-
-		for i in range(0,9):
-			try:
-				m = Move("2", nx[i], ny[i])
-				node = Node(self.father.get_moves() + [m])
-				self.father.add_adj(node)
-			except:
-				pass
-
-		self.father.add_move(mooove)
-		print(mooove)
-		'''
-
-	def next(self, move):
-		print()
 
 class Node:
 
@@ -216,7 +186,6 @@ class Node:
 					possible_moves2 = self.find_moves("2", m, adj, levels)
 					for pos in possible_moves2:
 						self.add_adj(Node(moves + [pos]))
-						#print("addou")
 			if m.player is "1":
 				adjs = self.find_adjacents("1", m.x, m.y)
 				for adj in adjs:
@@ -268,7 +237,7 @@ class Node:
 
 	def emitUValue(self, npieces):
 		if npieces == 2:
-			return 1
+			return 3
 		if npieces == 3:
 			return 10
 		if npieces == 4:
