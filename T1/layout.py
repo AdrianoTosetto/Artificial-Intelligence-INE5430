@@ -32,7 +32,7 @@ class GameLayout(QWidget):
         self.setLayout(self.grid)
         self.init_cells()
         self.move(300, 150)
-        self.setWindowTitle('Calculator')
+        self.setWindowTitle('Gomokuzera')
         self.show()
 
     def make_move(self, x, y):
@@ -87,6 +87,8 @@ class GomokuCell(QPushButton):
         self.y = y
         self.alreadyClicked = False
     def on_click(self, currPlayer, lastx, lasty, canPlay):
+        if currPlayer[0] == 2:
+            return
         if not (self.alreadyClicked):
             self.alreadyClicked = True
         else:
@@ -105,6 +107,7 @@ class GomokuCell(QPushButton):
         lastx[0] = self.x
         lasty[0] = self.y
         canPlay[0] = True
+        currPlayer[0] = 2
         print(canPlay)
     def make_move(self, currPlayer):
         if not (self.alreadyClicked):

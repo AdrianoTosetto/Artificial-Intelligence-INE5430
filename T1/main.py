@@ -38,6 +38,7 @@ if __name__ == "__main__":
 	while g.win is False:
 		if who is "1":
 			who = "2"
+			gl.currPlayer[0] = 2
 			if loop_desperate_measure >= 100:
 				print("A IA se desesperou!")
 				x = randint(0,14)
@@ -74,6 +75,7 @@ if __name__ == "__main__":
 					print("A IA está pensando...")
 					loop_desperate_measure += 1
 					who="1"
+					gl.currPlayer[0] = 1
 					continue
 
 			elif second:
@@ -91,6 +93,7 @@ if __name__ == "__main__":
 					print("A IA está pensando...")
 					loop_desperate_measure += 1
 					who="1"
+					gl.currPlayer[0] = 2
 					continue
 
 			else:
@@ -163,6 +166,7 @@ if __name__ == "__main__":
 				gl.canPlay[0] = False
 			else:
 				who = "2"
+				gl.currPlayer[0] = 2
 				continue
 		g.win = g.has_winner(x,y)
 		print(g)
