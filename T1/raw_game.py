@@ -80,8 +80,8 @@ class RawGame:
 		self.game_matrix[x][y] = str(who)
 
 		mooove = Move(who, x, y)
-
-		print(mooove)
+		
+		print(Move(who, y+1, x+1))
 
 		if self.has_winner(x,y):
 			self.win = True

@@ -9,6 +9,7 @@ class Tree:
 	def __init__(self, initialNode):
 		self.father = initialNode
 		self.current_game_matrix = [[0 for _ in range(15)] for _ in range(15)]
+		self.father.set_maximizing(1)
 		'''
 		centerx = set([4,5,6,7,8,9,10])
 		centery = set([4,5,6,7,8,9,10])
@@ -47,10 +48,22 @@ class Node:
 		self.beta = float("inf")
 		self.adjs = []
 		self.father = None
+		self.heuristic = -1 * float("inf")
+		self.maximizing = None
 		if moves is None:
 			self.moves = []
 		else:
 			self.moves = moves
+
+	def is_maximizing(self):
+		return self.maximizing
+	def set_maximizing(self, max):
+		self.maximizing = max
+
+	def get_heuristic(self):
+		return self.heuristic
+	def set_heuristic(self, value):
+		self.heuristic = value
 
 	def get_moves(self):
 		return self.moves
@@ -75,6 +88,7 @@ class Node:
 		self.adjs = adjs
 		for adj in adjs:
 			adj.set_father(self)
+			adj.set_maximizing((self.is_maximizing() + 1) % 2)
 
 	def set_father(self, father):
 		self.father = father
@@ -82,6 +96,7 @@ class Node:
 	def add_adj(self, adj):
 		self.adjs.append(adj)
 		adj.set_father(self)
+		adj.set_maximizing((self.is_maximizing() + 1) % 2)
 
 	def get_adjs(self):
 		return self.adjs
@@ -191,43 +206,52 @@ class Node:
 	#gilui eh um bbk
 	def populate(self, levels):
 		if levels == 0:
-			self.setUtilityValue() 
-			return self.get_alpha()
+			return
 		moves = self.get_moves()
-		alpha = 0
 
 		for m in moves:
 			if m.player is "2":
 				adjs = self.find_adjacents("2", m.x, m.y)
 				for adj in adjs:
-					possible_moves2 = self.find_moves("2", m, adj, "1")
+					possible_moves2 = self.find_moves("2", m, adj, levels)
 					for pos in possible_moves2:
 						self.add_adj(Node(moves + [pos]))
 						#print("addou")
 			if m.player is "1":
 				adjs = self.find_adjacents("1", m.x, m.y)
 				for adj in adjs:
-					possible_moves1 = self.find_moves("1", m, adj, "1")
+					possible_moves1 = self.find_moves("1", m, adj, levels)
 					for pos in possible_moves1:
 						self.add_adj(Node(moves + [pos]))
 
-		adnodes = self.get_adjs()
+		return
 
-		#print("levels")
-		#print(levels)
-
-		for adnode in adnodes:
-			alpha += adnode.populate(levels-1)
-
-		print("alpha:")
-		print(alpha)
-		return alpha
+	def pruning(self, levels, alpha, beta):
+		if levels == 0:
+			return self.get_heuristic()
+		if self.is_maximizing():
+			v = -1 * float("inf")
+			for node in self.get_adjs():
+				v = max(v, node.pruning(levels-1,alpha,beta))
+				alpha = max(v, alpha)
+				if beta <= alpha:
+					break
+			self.set_heuristic(v)
+			return v
+		else:
+			v = float("inf")
+			for node in self.get_adjs():
+				v = min(v, node.pruning(levels-1,alpha,beta))
+				beta = min(v, beta)
+				if beta <= alpha:
+					break
+			self.set_heuristic(v)
+			return v
 
 	def __str__(self):
 		return self.moves.__str__()
 	def depth_search_first(self):
 		visited, stack = set(), [self]
-		
 		while stack:
 			vertex = stack.pop()
 
@@ -246,9 +270,9 @@ class Node:
 		if npieces == 2:
 			return 1
 		if npieces == 3:
-			return 5
+			return 10
 		if npieces == 4:
-			return 15
+			return 30
 		if npieces == 5:
 			return 100
 		#print('deu merda')
@@ -405,5 +429,5 @@ class Node:
 							utility = utility + self.emitUValue(piece_counter)
 						if player == "1":
 							utility = utility - self.emitUValue(piece_counter)
-		if self.get_alpha() < utility:
-			self.set_alpha(utility)
+		if self.get_heuristic() < utility:
+			self.set_heuristic(utility)
