@@ -54,14 +54,14 @@ class Node:
 	def add_move(self, move):
 		self.moves.append(move)
 
+	def set_father(self, father):
+		self.father = father
+
 	def set_adjs(self, adjs):
 		self.adjs = adjs
 		for adj in adjs:
 			adj.set_father(self)
 			adj.set_maximizing((self.is_maximizing() + 1) % 2)
-
-	def set_father(self, father):
-		self.father = father
 
 	def add_adj(self, adj):
 		self.adjs.append(adj)
@@ -139,38 +139,45 @@ class Node:
 		xcurr = xlast
 		ycurr = ylast
 
+		#print("PATH = 1")
 		while Move(who, xcurr, ycurr) in list_moves:
+			#print(Move(who, xcurr, ycurr))
 			xcurr = xcurr + dirx * path
 			ycurr = ycurr + diry * path
 			#print(xcurr)
 			#print(ycurr)
 		if ((Move("1", xcurr, ycurr) not in list_moves) or
-			(Move("2", xcurr, ycurr) not in list_moves)) and (xcurr > -1 and xcurr < 15 and ycurr > -1 and ycurr < 15):
+			(Move("2", xcurr, ycurr) not in list_moves)) and self.correct_range(xcurr, ycurr):
 			move1 = Move(player, xcurr, ycurr)
+		#	print(move1)
 			moves.add(move1)
 		path = -1
 
 		xcurr = xpenu
 		ycurr = ypenu
 
+		#print("PATH = -1")
 		while Move(who, xcurr, ycurr) in list_moves:
+			#print(Move(who, xcurr, ycurr))
 			xcurr = xcurr + dirx * path
 			ycurr = ycurr + diry * path
 		if ((Move("1", xcurr, ycurr) not in list_moves) or
-			(Move("2", xcurr, ycurr) not in list_moves)) and (xcurr > -1 and xcurr < 15 and ycurr > -1 and ycurr < 15):
+			(Move("2", xcurr, ycurr) not in list_moves)) and self.correct_range(xcurr, ycurr):
 			move2 = Move(player, xcurr, ycurr)
+			#print(move2)
 			moves.add(move2)
 
 		x = last.x
 		y = last.y
+
 		if len(moves) == 0:
-
-			nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
-			ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
-
-			m = Move(who, random.sample(nx, 1)[0], random.sample(ny, 1)[0])
-
-			moves.add(m)
+			#print("eita")
+			rand_adj = self.find_adjacents(0, last.x, last.y)
+			rand_adj = rand_adj + self.find_adjacents(0, penultimate.x, penultimate.y)
+			for m in rand_adj:
+				moves.add(Move(player, m.x, m.y))
+		#else:
+			#print("eita")
 
 		return moves
 	#gilui eh um bbk
@@ -178,32 +185,48 @@ class Node:
 		if levels == 0:
 			return
 		moves = self.get_moves()
+		adnodes = self.get_adjs()
+		is_present = False
+		who = moves[-2].player
 
 		for m in moves:
 			if m.player is "2":
 				adjs = self.find_adjacents("2", m.x, m.y)
 				for adj in adjs:
-					possible_moves2 = self.find_moves("2", m, adj, levels)
+					possible_moves2 = self.find_moves("2", m, adj, who)
 					for pos in possible_moves2:
-						self.add_adj(Node(moves + [pos]))
+						is_present = False
+						for adnode in adnodes:
+							if moves + [pos] == adnode.get_moves():
+								is_present = True
+						if not is_present:
+							self.add_adj(Node(moves + [pos]))
+							self.get_adjs()[-1].populate(levels-1)
 			if m.player is "1":
 				adjs = self.find_adjacents("1", m.x, m.y)
 				for adj in adjs:
-					possible_moves1 = self.find_moves("1", m, adj, levels)
+					possible_moves1 = self.find_moves("1", m, adj, who)
 					for pos in possible_moves1:
-						self.add_adj(Node(moves + [pos]))
+						is_present = False
+						for adnode in adnodes:
+							if moves + [pos] == adnode.get_moves():
+								is_present = True
+						if not is_present:
+							self.add_adj(Node(moves + [pos]))
+							self.get_adjs()[-1].populate(levels-1)
 
 		return
 
 	def pruning(self, levels, alpha, beta):
 		if levels == 0:
+			self.setUtilityValue()
 			return self.get_heuristic()
 		if self.is_maximizing():
 			v = -1 * float("inf")
 			for node in self.get_adjs():
 				v = max(v, node.pruning(levels-1,alpha,beta))
 				alpha = max(v, alpha)
-				if beta <= alpha:
+				if beta >= alpha:
 					break
 			self.set_heuristic(v)
 			return v
@@ -212,7 +235,7 @@ class Node:
 			for node in self.get_adjs():
 				v = min(v, node.pruning(levels-1,alpha,beta))
 				beta = min(v, beta)
-				if beta <= alpha:
+				if beta >= alpha:
 					break
 			self.set_heuristic(v)
 			return v
@@ -237,15 +260,14 @@ class Node:
 
 	def emitUValue(self, npieces):
 		if npieces == 2:
-			return 3
+			return 20
 		if npieces == 3:
-			return 10
-		if npieces == 4:
-			return 30
-		if npieces == 5:
 			return 100
-		#print('deu merda')
-		return 0
+		if npieces == 4:
+			return 500
+		if npieces == 5:
+			return 50000
+		return 1
 
 	def setUtilityValue(self):
 		already_visited = set()
@@ -264,11 +286,9 @@ class Node:
 			nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
 			ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
 
-			piece_counter = 2
-
 			for i in range(0, 8):
+				piece_counter = 2
 				m = Move(player, nx[i], ny[i])
-
 				if m in node_moves:
 					dirx = mov.x - nx[i]
 					diry = mov.y - ny[i]
@@ -299,9 +319,11 @@ class Node:
 						m2_1_o in node_moves or
 						m3_1_o in node_moves)):
 						if player == "2":
+						#	print("+valor")
 							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":
-							utility = utility - self.emitUValue(piece_counter)
+							#print("-valor")
+							utility = utility - self.emitUValue(piece_counter) * 1.5
 
 					piece_counter = 2
 
@@ -331,9 +353,11 @@ class Node:
 						m2_2_o in node_moves or
 						m3_2_o in node_moves)):
 						if player == "2":
+						#	print("+valor")
 							utility = utility + self.emitUValue(piece_counter)
-						if player == "1":
-							utility = utility - self.emitUValue(piece_counter)
+						elif player == "1":
+							#print("-valor")
+							utility = utility - self.emitUValue(piece_counter) * 1.5
 
 					piece_counter = 2
 					#caso 3
@@ -362,9 +386,11 @@ class Node:
 						m2_3_o in node_moves or
 						m3_3_o in node_moves)):
 						if player == "2":
+							#print("+valor")
 							utility = utility + self.emitUValue(piece_counter)
-						if player == "1":
-							utility = utility - self.emitUValue(piece_counter)
+						elif player == "1":
+							#print("-valor")
+							utility = utility - self.emitUValue(piece_counter) * 1.5
 
 					piece_counter = 2
 
@@ -395,8 +421,9 @@ class Node:
 						m2_4_o in node_moves or
 						m3_4_o in node_moves)):
 						if player == "2":
+							#print("+valor")
 							utility = utility + self.emitUValue(piece_counter)
-						if player == "1":
-							utility = utility - self.emitUValue(piece_counter)
-		if self.get_heuristic() < utility:
-			self.set_heuristic(utility)
+						elif player == "1":
+							#print("-valor")
+							utility = utility - self.emitUValue(piece_counter)# * 1.5
+		self.set_heuristic(utility)

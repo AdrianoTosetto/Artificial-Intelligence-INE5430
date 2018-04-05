@@ -17,6 +17,7 @@ if __name__ == "__main__":
 	ny = None
 	father = None
 	tree = None
+	loop_desperate_measure = 0
 	curr_node = Node()
 
 	first_five_moves = []
@@ -24,7 +25,18 @@ if __name__ == "__main__":
 	while g.win is False:
 		if who is "1":
 			who = "2"
-
+			if loop_desperate_measure >= 100:
+				print("A IA se desesperou!")
+				x = randint(0,14)
+				y = randint(0,14)
+				if g.game_matrix[x][y] is 0:
+					curr_node.add_adj(Node(curr_node.get_moves() + [Move("2",x,y)]))
+					curr_node = curr_node.get_adjs()[-1]
+					g.make_move(who,x,y)
+					loop_desperate_measure = 0
+					g.win = g.has_winner(x,y)
+					print(g)
+					continue
 			if first:
 				centerx = set([4,5,6,7,8,9,10])
 				centery = set([4,5,6,7,8,9,10])
@@ -39,12 +51,14 @@ if __name__ == "__main__":
 				nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
 				ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
 				if g.game_matrix[x][y] is 0:
-					print("joguei")
+					#print("joguei")
 					g.make_move(who,x,y)
+					loop_desperate_measure = 0
 					first = False
 					second = True
 				else:
-					print("joga logo")
+					print("A IA está pensando...")
+					loop_desperate_measure += 1
 					who="1"
 					continue
 
@@ -54,17 +68,20 @@ if __name__ == "__main__":
 				m = Move(who,x,y)
 				first_five_moves.append(m)
 				if g.game_matrix[x][y] is 0:
-					print("joguei")
+					#print("joguei")
 					g.make_move(who,x,y)
+					loop_desperate_measure = 0
 					second = False
 				else:
-					print("joga logo")
+					print("A IA está pensando...")
+					loop_desperate_measure += 1
 					who="1"
 					continue
 
 			else:
-				curr_node.populate(2)
-				curr_node.pruning(2, -1 * float("inf"), float("inf"))
+				curr_node.populate(4)
+				curr_node.pruning(4, -1 * float("inf"), float("inf"))
+				#old_node = curr_node
 				chosen_nodes = curr_node.get_adjs()
 				min_v = -1 * float("inf")
 				possible_nodes = []
@@ -79,16 +96,19 @@ if __name__ == "__main__":
 				x = curr_node.get_moves()[-1].x
 				y = curr_node.get_moves()[-1].y
 				if g.game_matrix[x][y] is 0:
-					print("joguei")
+					#print("joguei")
 					g.make_move(who,x,y)
+					loop_desperate_measure = 0
 				else:
-					print("joga logo")
+					print("A IA está pensando...")
+					loop_desperate_measure += 1
 					who="1"
+					#curr_node = old_node
 					continue
 
 		else:
 			who = "1"
-			print("Faca sua jogada!")
+			print("Faça sua jogada!")
 			print("X:")
 			y = int(input()) - 1
 			print("Y:")
@@ -97,6 +117,8 @@ if __name__ == "__main__":
 			if g.game_matrix[x][y] is 0:
 				g.make_move(who,x,y)
 				if len(first_five_moves) < 4:
+					#print("LENGTH")
+					#print(len(first_five_moves))
 					first_five_moves.append(m)
 				elif father is None:
 					first_five_moves.append(m)
@@ -111,16 +133,16 @@ if __name__ == "__main__":
 					old_curr = curr_node
 					for nds in curr_node.get_adjs():
 						next_node = nds
-						if nds.get_moves()[-1] == m:
+						if nds.get_moves() == cm:
 							curr_node = nds
 							break
-					if old_curr == curr_node:
+					if curr_node.get_moves() != nds.get_moves():
 						next_node = Node(cm)
 						curr_node.add_adj(next_node)
-						curr_node = next_node
+						curr_node = curr_node.get_adjs()[-1]
 			else:
 				who = "2"
-				continue		
+				continue
 		g.win = g.has_winner(x,y)
 		print(g)
 

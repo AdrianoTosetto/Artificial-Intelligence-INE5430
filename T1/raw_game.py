@@ -63,24 +63,34 @@ class RawGame:
 			return False
 
 		hw = True
+		pieces = 1
 		for i in range(1, 5):
 			try:
 				if self.game_matrix[x + i * dx][y + i * dy] is not who:
-					hw = False
 					break
+				else:
+					pieces += 1
 			except:
-				hw = False
 				pass
 				break
-		self.utility = 20
-		return hw
+		for i in range(1, 5):
+			try:
+				if self.game_matrix[x - i * dx][y - i * dy] is not who:
+					break
+				else:
+					pieces += 1
+			except:
+				pass
+				break
+
+		return pieces >= 5
 
 	def make_move(self, who, x, y):
 		#print(self.game_matrix[x][y])
 		self.game_matrix[x][y] = str(who)
 
 		mooove = Move(who, x, y)
-		
+
 		print(Move(who, y+1, 15-x))
 
 		if self.has_winner(x,y):
