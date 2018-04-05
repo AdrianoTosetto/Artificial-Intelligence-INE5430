@@ -39,6 +39,7 @@ if __name__ == "__main__":
 		if who is "1":
 			who = "2"
 			gl.currPlayer[0] = 2
+			gl.setWhoPlaysText("Junior(IA)")
 			if loop_desperate_measure >= 100:
 				print("A IA se desesperou!")
 				x = randint(0,14)
@@ -76,6 +77,7 @@ if __name__ == "__main__":
 					loop_desperate_measure += 1
 					who="1"
 					gl.currPlayer[0] = 1
+					gl.setWhoPlaysText("Humano")
 					continue
 
 			elif second:
@@ -93,6 +95,7 @@ if __name__ == "__main__":
 					print("A IA está pensando...")
 					loop_desperate_measure += 1
 					who="1"
+					gl.setWhoPlaysText("Humano")
 					gl.currPlayer[0] = 2
 					continue
 
@@ -118,10 +121,12 @@ if __name__ == "__main__":
 					g.make_move(who,x,y)
 					gl.make_move(x, y)
 					loop_desperate_measure = 0
+					gl.setWhoPlaysText("Humano")
 				else:
 					print("A IA está pensando...")
 					loop_desperate_measure += 1
 					who="1"
+					gl.setWhoPlaysText("Humano")
 					#curr_node = old_node
 					continue
 
@@ -167,6 +172,7 @@ if __name__ == "__main__":
 			else:
 				who = "2"
 				gl.currPlayer[0] = 2
+				gl.setWhoPlaysText("Junior(IA)")
 				continue
 		g.win = g.has_winner(x,y)
 		print(g)

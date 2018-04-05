@@ -2,7 +2,7 @@ import sys
 import PyQt5
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import (QWidget, QGridLayout, 
-    QPushButton, QApplication, QMessageBox)
+    QPushButton, QApplication, QMessageBox, QLabel)
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
@@ -22,16 +22,23 @@ class GameLayout(QWidget):
         self.lastYPlayed = [-1]
         self.canPlay = [False]
         self.buttons = [[None for _ in range(15)] for _ in range(15)]
+        self.whoPlaysLabel = QPushButton("Humano")
         super().__init__()
         self.grid = None
         self.initUI()
-
+    def setWhoPlaysText(self,text):
+        self.whoPlaysLabel.setText(text)
+        QApplication.processEvents()
+        print('mudou')
     def initUI(self):
-        
+        self.mainGrid = QGridLayout()
         self.grid = QGridLayout()
-        self.setLayout(self.grid)
+        self.gridRight = QGridLayout()
+        self.gridRight.addWidget(self.whoPlaysLabel)
+        self.setLayout(self.mainGrid)
         self.init_cells()
         self.move(300, 150)
+        self.setGeometry(300,300, 700, 500)
         self.setWindowTitle('Gomokuzera')
         self.show()
 
@@ -56,6 +63,8 @@ class GameLayout(QWidget):
             self.buttons[position[0]][position[1]].setStyleSheet(GomokuCell.defaultStyleSheet)
             self.grid.addWidget(self.buttons[position[0]][position[1]], *position)
 
+        self.mainGrid.addLayout(self.grid,0,0)
+        self.mainGrid.addLayout(self.gridRight,0,1)
 
 class WarningMessageBox:
     def __init__(self, msg):
