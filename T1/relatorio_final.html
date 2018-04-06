@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css">
+		.page-content {
+			width: 80%;
+			position: absolute;
+			left:10%;
+		}
+		p{
+			text-align: justify;
+			text-indent:4em;
+			 line-height: 1.5;
+		}
+		.front-page{
+			text-align: center;
+			position: relative;
+		}
+		.front-page{
+			height: 100%;
+			border:1px solid #CCC;
+		}
+		.front-page {
+
+		}
+		.title {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 500px;
+		}
+		pre, code {
+		  	font-family: monospace, monospace;
+		}
+		pre {
+		  	overflow: auto;
+		}
+		pre > code {
+			display: block;
+		 	padding: 1rem;
+		 	word-wrap: normal;
+		}
+		.sec {
+			border: 1px solid #CCC;
+			padding: 10px;
+			margin-bottom: 10px;
+		}
+		.intro {
+
+		}
+		strong {
+			
+		}
+		ul{
+			list-style: none;
+		}
+	</style>
+</head>
+<body>
+<div class="page-content">
+<div class="front-page sec">
+	<h4>Universidade Federal de Santa Catarina</h4>
+	<div class="title">
+		<strong>
+			Relatório - Parte 1
+		</strong>
+	</div>
+	<div class="snames">
+		<strong>Adriano Rafael Meira Tosetto - 15104099</strong>
+		<br>
+		<strong>Giulio Guilherme de Souza Simão - 15100738</strong>
+	</div>
+	<div class="date">
+		Florianópolis, 20 de março de 2018.
+	</div>
+
+</div>
+<div class="summ sec">
+	<ol>
+		<li><a href="#intro">Introdução</a></li>
+		<li><a href="#hu">Heurística e Utilidade</a></li>
+		<li><a href="#ed">Estrutura de Dados</a></li>
+		<li><a href="#otm">Otimizações</a></li>
+	</ol>
+</div>
+	<div class="intro sec" id="intro">
+		<h3>Introdução</h3>
+		<p>
+			Neste relatório iremos apresentar a heurística para o jogo Gomoku (<a href="https://pt.wikipedia.org/wiki/Gomoku">Gomoku</a>), as estruturas e dados que, possivelmente, serão usadas e algumas otimizações. Ainda há chance de mudar alguns desses tópicos na implementação final do trabalho. A linguagem escolhida será Python, devido a sua facilidade na manipulação e criação de estruturas de dados e sintaxe simples.
+
+		</p>
+	</div>
+<div class="hu sec" id="hu">
+<h3>Heurística e Utilidade</h3>
+<p>
+	Para cada dupla de peças adjacentes no tabuleiro, as casas nos dois sentidos da direção em que é formada a dupla são percorridas procurando possíveis quíntuplas. São analisados quatro casos, representando as possíveis quíntuplas formadas a partir daquela dupla, e é somado ao valor de heurística do nodo um valor proporcional ao número de peças já colocadas na possível quíntupla, com quíntuplas já formadas tendo um peso bem mais elevado. Sequências adversárias têm peso negativo com um multiplicador, fazendo com que a IA faça jogadas mais defensivas. A função chamada é a setUtilityValue() da classe Node.
+</p>
+
+</div>
+<div class="ed sec" id="ed">
+	<h3>Estruturas de Dados</h3>
+
+	<p>
+		Cada nodo da árvore de jogadas é uma lista ordenada contendo a posição de cada peça 
+		jogada e o dono da peça. Além disso, há um conjunto auxiliar de peças visitadas durante o cálculo do valor de heurística do nodo.
+	</p>
+	<h4>Estruturas que são utilizadas</h4>
+	<ul>
+	<li><strong>Árvore:</strong> Será usado para fazer a previsão das jogadas, à qual é aplicada a poda.</li>
+	<li><strong>Lista:</strong> Será usada para encontrar sequências e possíveis jogadas a serem previstas.</li>
+	<li><strong>Conjunto:</strong>Será usado para evitar contagens duplicadas.</li>
+	</ul>
+		As estruturas são representadas, respectivamente, por:
+	<ul>
+		<li><strong>class Tree</strong>,  representa a árvore</li>
+		<li><strong>list()</strong>, estrutura já presente no python, ordenada pela ordem das jogadas</li>
+		<li><strong>set()</strong>, estrutura também já presente no python</li>
+	</ul>
+	</p>
+</div>
+<div class="otm sec" id="otm">
+	<h3>Otimizações</h3>
+
+	<p>
+		Uma otimização feita foi popular a árvore já na função recursiva de poda, para diminuir o número de nodos criados que serão podados. Também foi limitada a busca de novas jogadas a peças adjacentes a peças já jogadas, dimuindo o número de nodos criados. Caso a IA não encontre possíveis jogadas após 50 tentativas, ela escolherá uma casa aleatória.
+	</p>
+</div>
+
+<div class="pc sec" id="pc">
+	<h3>Principais Classes</h3>
+	<p>
+		<strong>RawGame</strong>: A implementação do jogo com as operações mais básicas de movimentação e manipulação da matriz.
+	</p>
+	<p>
+		<strong>Move</strong>: É uma tupla para representar uma jogada.
+	</p>
+	<p>
+		<strong>Node</strong>: Classe que guarda uma lista de jogadas(Move), é classe básica usada para montar a àrvore de jogada e é onde o minimax e poda executam.
+	</p>
+	<p>
+		<strong>Tree</strong>: É a classe que guarda o node raiz(father) e a matriz do jogo para auxiliar nos cálculos.
+	</p>
+	<p>
+		<strong>Main</strong>: É onde ocorre o fluxo principal do jogo. Também é onde se determina as jogadas.
+	</p>
+	<p>
+		<strong>GameLayout</strong>: É a interface gráfica do jogo.
+	</p>
+</div>
+
+<div class="lim sec" id="lim">
+	<h3>Limitações</h3>
+
+	<p>
+		Em alguns momentos, a IA escolhe jogadas adjacentes a sequências com pontas abertas. Não foi possível descobrir o porquê até o momento. Além disso, em alguns casos, o fator de medo (multiplicador para o valor de sequências adversárias) faz a IA executar jogadas defensivas demais, como não fazer uma sequência de maior valor para bloquear uma sequência adversária pequena, ou jogadas demasiadamente inconsequentes, que ignoram sequências adversárias para fazer sequências de menor valor. Até o momento, não é conhecido se o valor usado é um valor ótimo.</p>
+
+		<p>Outro problema foi que IA toma decisões muito lentamente conforme o jogo vai avançando. Isso pode se dever ao fato de que a linguagem escolhida não é tão eficiente e que o número de níveis da árvore a serem gerados por rodada é um pouco elevado.</p>
+		<p>
+		A IA fica confusa caso o humano faça uma jogada muito isolada.
+		</p>
+</div>
+
+
+<div class="pm sec" id="pm">
+	<h3>Principais Métodos</h3>
+
+	<p>
+		<strong>find_adjacents</strong>: Retorna uma lista de movimentos que são adjacentes ao Move passado para o método e são do mesmo jogador.
+		<strong>find_moves</strong>: Retorna todos os movimentos possíveis em torno de uma sequência. Se não achar nada, ele retorna uma lista de adjacentes a uma das peças escolhidas.
+		<strong>populate</strong>: Pode gerar filhos, netos e assim por diante. Depende do número de gerações passada para o método.
+		<strong>pruning</strong>: Realiza a poda.
+		<strong>emitUValue</strong>: Retorna um valor de utilidade levando em consideração o número de peças em sequência.
+		<strong>setUtilityValue</strong>: Procura sequências de peças.
+	</p>
+</div>
+
+<div class="cf sec" id="cf">
+	<h3>Considerações Finais</h3>
+
+	<p>
+		<strong>Código da poda</strong>: o código foi alterado da <a href="https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning">wikipedia</a>.	
+	</p>
+</div>
+
+</div>
+</body>
+</html>

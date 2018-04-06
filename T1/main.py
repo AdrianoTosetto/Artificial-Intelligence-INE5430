@@ -34,13 +34,20 @@ if __name__ == "__main__":
 	curr_node = Node()
 
 	first_five_moves = []
-
+	while gl is None:
+		continue
+	who = str(gl.whoStartedPlaying)
+	if who is "1":
+		who = "2"
+	else:
+		who = "1"
+	print(who)
 	while g.win is False:
 		if who is "1":
 			who = "2"
 			gl.currPlayer[0] = 2
 			gl.setWhoPlaysText("Junior(IA)")
-			if loop_desperate_measure >= 100:
+			if loop_desperate_measure >= 50:
 				print("A IA se desesperou!")
 				x = randint(0,14)
 				y = randint(0,14)
@@ -48,6 +55,7 @@ if __name__ == "__main__":
 					curr_node.add_adj(Node(curr_node.get_moves() + [Move("2",x,y)]))
 					curr_node = curr_node.get_adjs()[-1]
 					g.make_move(who,x,y)
+					gl.make_move(currPlayer,x,y)
 					loop_desperate_measure = 0
 					g.win = g.has_winner(x,y)
 					print(g)
@@ -69,6 +77,7 @@ if __name__ == "__main__":
 					#print("joguei")
 					g.make_move(who,x,y)
 					gl.make_move(x, y)
+					gl.setWhoPlaysText("Humano")
 					loop_desperate_measure = 0
 					first = False
 					second = True
@@ -100,7 +109,7 @@ if __name__ == "__main__":
 					continue
 
 			else:
-				curr_node.populate(4)
+				#curr_node.populate(4)
 				curr_node.pruning(4, -1 * float("inf"), float("inf"))
 				#old_node = curr_node
 				chosen_nodes = curr_node.get_adjs()
@@ -119,7 +128,7 @@ if __name__ == "__main__":
 				if g.game_matrix[x][y] is 0:
 					#print("joguei")
 					g.make_move(who,x,y)
-					gl.make_move(x, y)
+					gl.make_move(x, y)	
 					loop_desperate_measure = 0
 					gl.setWhoPlaysText("Humano")
 				else:
@@ -144,9 +153,7 @@ if __name__ == "__main__":
 			m = Move(who, x, y)
 			if g.game_matrix[x][y] is 0:
 				g.make_move(who,x,y)
-				if len(first_five_moves) < 4:
-					#print("LENGTH")
-					#print(len(first_five_moves))
+				if len(first_five_moves) < 3:
 					first_five_moves.append(m)
 				elif father is None:
 					first_five_moves.append(m)

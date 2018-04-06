@@ -2,7 +2,7 @@ import sys
 import PyQt5
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import (QWidget, QGridLayout, 
-    QPushButton, QApplication, QMessageBox, QLabel)
+    QPushButton, QApplication, QMessageBox, QLabel, QInputDialog)
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
@@ -22,10 +22,14 @@ class GameLayout(QWidget):
         self.lastYPlayed = [-1]
         self.canPlay = [False]
         self.buttons = [[None for _ in range(15)] for _ in range(15)]
+        self.gameStarted = [False]
+        self.whoStartedPlaying = -1
         self.whoPlaysLabel = QPushButton("Humano")
         super().__init__()
         self.grid = None
         self.initUI()
+        self.whoStartedPlaying = self.getChoice()
+        self.gameStarted = True
     def setWhoPlaysText(self,text):
         self.whoPlaysLabel.setText(text)
         QApplication.processEvents()
@@ -65,6 +69,16 @@ class GameLayout(QWidget):
 
         self.mainGrid.addLayout(self.grid,0,0)
         self.mainGrid.addLayout(self.gridRight,0,1)
+    def getChoice(self):
+        items = ("Junior, a IA", "Humano")
+        item, okPressed = QInputDialog.getItem(self, "Quem começa jogando","", items, 0, False)
+        if okPressed and item:
+            if item == "Humano":
+                print("humano")
+                return "1"
+            else:
+                print("IA")
+                return "2"
 
 class WarningMessageBox:
     def __init__(self, msg):
