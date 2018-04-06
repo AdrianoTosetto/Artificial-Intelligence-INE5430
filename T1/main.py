@@ -177,4 +177,8 @@ if __name__ == "__main__":
 		g.win = g.has_winner(x,y)
 		print(g)
 
+	if who is "1":
+		gl.setWhoPlaysText("Humano ganhou")
+	else:
+		gl.setWhoPlaysText("Junior(IA) ganhou")
 	print("Jogador " + who + " ganhou!")

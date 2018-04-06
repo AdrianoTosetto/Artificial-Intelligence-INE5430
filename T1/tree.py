@@ -9,7 +9,7 @@ class Tree:
 	def __init__(self, initialNode):
 		self.father = initialNode
 		self.current_game_matrix = [[0 for _ in range(15)] for _ in range(15)]
-		self.father.set_maximizing(True)
+		self.father.set_maximizing(False)
 
 class Node:
 
@@ -266,10 +266,11 @@ class Node:
 		if npieces == 4:
 			return 1250000
 		if npieces == 5:
-			return 125000000000000
+			return 625000000
 		return 1
 
 	def setUtilityValue(self):
+		fear_factor = 2500
 		already_visited = set()
 		utility = 0
 		node_moves = self.get_moves()
@@ -320,10 +321,10 @@ class Node:
 						m3_1_o in node_moves)):
 						if player == "2":
 						#	print("+valor")
-							utility = utility + self.emitUValue(piece_counter) * 5000
+							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":
 							#print("-valor")
-							utility = utility - self.emitUValue(piece_counter)
+							utility = utility - self.emitUValue(piece_counter) * 10
 
 					piece_counter = 2
 
@@ -354,10 +355,10 @@ class Node:
 						m3_2_o in node_moves)):
 						if player == "2":
 						#	print("+valor")
-							utility = utility + self.emitUValue(piece_counter) * 5000
+							utility = utility + self.emitUValue(piece_counter)# * 500010fear_factor
 						elif player == "1":
 							#print("-valor")
-							utility = utility - self.emitUValue(piece_counter)
+							utility = utility - self.emitUValue(piece_counter) * fear_factor
 
 					piece_counter = 2
 					#caso 3
@@ -387,10 +388,10 @@ class Node:
 						m3_3_o in node_moves)):
 						if player == "2":
 							#print("+valor")
-							utility = utility + self.emitUValue(piece_counter) * 5000
+							utility = utility + self.emitUValue(piece_counter)# * 5000
 						elif player == "1":
 							#print("-valor")
-							utility = utility - self.emitUValue(piece_counter)
+							utility = utility - self.emitUValue(piece_counter) * fear_factor
 
 					piece_counter = 2
 
@@ -422,8 +423,8 @@ class Node:
 						m3_4_o in node_moves)):
 						if player == "2":
 							#print("+valor")
-							utility = utility + self.emitUValue(piece_counter) * 5000
+							utility = utility + self.emitUValue(piece_counter)# * 5000
 						elif player == "1":
 							#print("-valor")
-							utility = utility - self.emitUValue(piece_counter)
-		self.set_heuristic(utility)
+							utility = utility - self.emitUValue(piece_counter) * fear_factor
+			self.set_heuristic(utility)
