@@ -25,20 +25,23 @@ class GameLayout(QWidget):
         self.gameStarted = [False]
         self.whoStartedPlaying = -1
         self.whoPlaysLabel = QPushButton("Humano")
+        self.statusLabel = QPushButton("status:")
         super().__init__()
         self.grid = None
         self.initUI()
         self.whoStartedPlaying = self.getChoice()
         self.gameStarted = True
+    def setStatusLabel(self, text):
+        self.statusLabel.setText(text)
     def setWhoPlaysText(self,text):
         self.whoPlaysLabel.setText(text)
         QApplication.processEvents()
-        print('mudou')
     def initUI(self):
         self.mainGrid = QGridLayout()
         self.grid = QGridLayout()
         self.gridRight = QGridLayout()
         self.gridRight.addWidget(self.whoPlaysLabel)
+        self.gridRight.addWidget(self.statusLabel)
         self.setLayout(self.mainGrid)
         self.init_cells()
         self.move(300, 150)

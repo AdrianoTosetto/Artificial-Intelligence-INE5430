@@ -1,6 +1,5 @@
 from move import Move
 import random
-import globals
 
 # as arveres somos nozes
 
@@ -112,17 +111,12 @@ class Node:
 		xcurr = xlast
 		ycurr = ylast
 
-		#print("PATH = 1")
 		while Move(who, xcurr, ycurr) in list_moves:
-			#print(Move(who, xcurr, ycurr))
 			xcurr = xcurr + dirx * path
 			ycurr = ycurr + diry * path
-			#print(xcurr)
-			#print(ycurr)
 		if ((Move("1", xcurr, ycurr) not in list_moves) or
 			(Move("2", xcurr, ycurr) not in list_moves)) and self.correct_range(xcurr, ycurr):
 			move1 = Move(player, xcurr, ycurr)
-		#	print(move1)
 			moves.add(move1)
 		path = -1
 
@@ -217,7 +211,6 @@ class Node:
 			vertex = stack.pop()
 
 			if vertex not in visited:
-				#print(vertex)
 				visited.add(vertex)
 				stack.extend(set(vertex.get_adjs()) - visited)
 		return list(visited)
@@ -251,7 +244,6 @@ class Node:
 				other = "2"
 			if player is "2":
 				other = "1"
-			#print(mov)
 			already_visited.add(mov)
 			nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
 			ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
@@ -321,10 +313,8 @@ class Node:
 						m2_2_o in node_moves or
 						m3_2_o in node_moves)):
 						if player == "2":
-						#	print("+valor")
 							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":
-							#print("-valor")
 							utility = utility - self.emitUValue(piece_counter) * fear_factor
 
 					piece_counter = 2
@@ -354,10 +344,8 @@ class Node:
 						m2_3_o in node_moves or
 						m3_3_o in node_moves)):
 						if player == "2":
-							#print("+valor")
 							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":
-							#print("-valor")
 							utility = utility - self.emitUValue(piece_counter) * fear_factor
 
 					piece_counter = 2
@@ -389,9 +377,7 @@ class Node:
 						m2_4_o in node_moves or
 						m3_4_o in node_moves)):
 						if player == "2":
-							#print("+valor")
 							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":
-							#print("-valor")
 							utility = utility - self.emitUValue(piece_counter) * fear_factor
 		self.set_heuristic(utility)

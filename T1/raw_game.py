@@ -4,20 +4,8 @@ class RawGame:
 
 	def __init__(self):
 		self.game_matrix = [[0 for _ in range(15)] for _ in range(15)]
-		self.duplas1 = set()
-		self.triplas1 = set()
-		self.quadruplas1 = set()
-		self.quintuplas1 = set()
-		self.sequencias1 = set()
-		self.duplas2 = set()
-		self.triplas2 = set()
-		self.quadruplas2 = set()
-		self.quintuplas2 = set()
-		self.sequencias2 = set()
 		self.win = False
 		self.IA = None
-
-		self.utility = 0
 
 	def setIA(self, IA):
 		self.IA = IA
@@ -27,20 +15,6 @@ class RawGame:
 			for e in line:
 				ret = ret + str(e)
 			ret = ret + "\n"
-		return ret
-
-	def get_free_adjacents(self, x, y, who):
-		ret = []
-
-		nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
-		ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
-		for i in range(0,9):
-			try:
-				if self.game_matrix[nx[i]][ny[i]] == 0:
-					m = Move(who,nx[i], ny[i])
-					ret.append(m)
-			except:
-				pass
 		return ret
 
 	def has_winner(self, lastx, lasty):

@@ -26,13 +26,9 @@ if __name__ == "__main__":
 	second = False
 	x = 0
 	y = 0
-	nx = None
-	ny = None
 	father = None
-	tree = None
 	loop_desperate_measure = 0
 	curr_node = Node()
-
 	first_five_moves = []
 	while gl is None:
 		continue
@@ -41,21 +37,22 @@ if __name__ == "__main__":
 		who = "2"
 	else:
 		who = "1"
-	print(who)
 	while g.win is False:
 		if who is "1":
 			who = "2"
+			gl.setWhoPlaysText("Junior")
+			gl.setStatusLabel("status: O Junior está pensando...")
 			gl.currPlayer[0] = 2
-			gl.setWhoPlaysText("Junior(IA)")
 			if loop_desperate_measure >= 50:
 				print("A IA se desesperou!")
+				gl.setStatusLabel("status: O Junior não sabe o que fazer :/ ")
 				x = randint(0,14)
 				y = randint(0,14)
 				if g.game_matrix[x][y] is 0:
 					curr_node.add_adj(Node(curr_node.get_moves() + [Move("2",x,y)]))
 					curr_node = curr_node.get_adjs()[-1]
 					g.make_move(who,x,y)
-					gl.make_move(currPlayer,x,y)
+					gl.make_move(gl.currPlayer[0],x,y)
 					loop_desperate_measure = 0
 					g.win = g.has_winner(x,y)
 					print(g)
@@ -74,15 +71,14 @@ if __name__ == "__main__":
 				nx = [x-1, x-1, x-1, x, x, x+1,x+1,x+1]
 				ny = [y-1, y, y+1, y-1,y+1, y-1, y, y+1]
 				if g.game_matrix[x][y] is 0:
-					#print("joguei")
 					g.make_move(who,x,y)
 					gl.make_move(x, y)
-					gl.setWhoPlaysText("Humano")
 					loop_desperate_measure = 0
 					first = False
 					second = True
 				else:
 					print("A IA está pensando...")
+					gl.setStatusLabel("status: O Junior está pensando...")
 					loop_desperate_measure += 1
 					who="1"
 					gl.currPlayer[0] = 1
@@ -95,23 +91,21 @@ if __name__ == "__main__":
 				m = Move(who,x,y)
 				first_five_moves.append(m)
 				if g.game_matrix[x][y] is 0:
-					#print("joguei")
 					g.make_move(who,x,y)
 					gl.make_move(x, y)
 					loop_desperate_measure = 0
 					second = False
 				else:
 					print("A IA está pensando...")
+					gl.setStatusLabel("status: O Junior está pensando...")
 					loop_desperate_measure += 1
 					who="1"
-					gl.setWhoPlaysText("Humano")
 					gl.currPlayer[0] = 2
 					continue
 
 			else:
-				#curr_node.populate(4)
+				curr_node.populate(4)
 				curr_node.pruning(4, -1 * float("inf"), float("inf"))
-				#old_node = curr_node
 				chosen_nodes = curr_node.get_adjs()
 				min_v = -1 * float("inf")
 				possible_nodes = []
@@ -126,17 +120,17 @@ if __name__ == "__main__":
 				x = curr_node.get_moves()[-1].x
 				y = curr_node.get_moves()[-1].y
 				if g.game_matrix[x][y] is 0:
-					#print("joguei")
 					g.make_move(who,x,y)
 					gl.make_move(x, y)	
 					loop_desperate_measure = 0
 					gl.setWhoPlaysText("Humano")
+					gl.setStatusLabel("status: O Junior está te esperando...")
 				else:
 					print("A IA está pensando...")
+					gl.setStatusLabel("status: A IA está pensando...")
 					loop_desperate_measure += 1
 					who="1"
 					gl.setWhoPlaysText("Humano")
-					#curr_node = old_node
 					continue
 
 		else:
@@ -144,6 +138,9 @@ if __name__ == "__main__":
 				continue
 			if not(gl.canPlay[0]):
 				continue
+			gl.setStatusLabel("status: O Junior está te esperando...")
+			gl.setWhoPlaysText("Humano")
+			gl.currPlayer[0] = 2
 			who = "1"
 			print("Faça sua jogada!")
 			print("X:")
