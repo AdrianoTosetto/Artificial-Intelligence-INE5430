@@ -2,6 +2,7 @@ from tree import Node
 from move import Move
 from random import randint
 from raw_game import RawGame
+import sys
 from tree import Tree
 import random
 from layout import GameLayout
@@ -11,7 +12,11 @@ from threading import Thread
 
 
 gl = None
+app = None
 def func():
+	global app
+	while app is None:
+		print('not ready')
 	app = QApplication(sys.argv)
 	global gl
 	gl = GameLayout()
@@ -19,6 +24,7 @@ def func():
 
 
 if __name__ == "__main__":
+
 	Thread(target=func).start()
 	g = RawGame()
 	who = "2"
