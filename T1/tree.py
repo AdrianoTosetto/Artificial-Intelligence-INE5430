@@ -222,17 +222,17 @@ class Node:
 
 	def emitUValue(self, npieces):
 		if npieces == 2:
-			return 50
+			return 60
 		if npieces == 3:
-			return 50000
+			return 250
 		if npieces == 4:
-			return 50000000
+			return 3000
 		if npieces == 5:
-			return (50000000000)^2
+			return 3000000
 		return 1
 
 	def setUtilityValue(self):
-		fear_factor = 62500000
+		fear_factor = 10
 		already_visited = set()
 		utility = 0
 		node_moves = self.get_moves()
@@ -280,6 +280,10 @@ class Node:
 						m1_1_o in node_moves or
 						m2_1_o in node_moves or
 						m3_1_o in node_moves)):
+						if (m1_1_o in node_moves or
+							m2_1_o in node_moves or
+							m3_1_o in node_moves):
+							print("bloqueado")
 						if player == "2":
 							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":
@@ -312,6 +316,10 @@ class Node:
 						m1_2_o in node_moves or
 						m2_2_o in node_moves or
 						m3_2_o in node_moves)):
+						if (m1_2_o in node_moves or
+							m2_2_o in node_moves or
+							m3_2_o in node_moves):
+							print("bloqueado")
 						if player == "2":
 							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":
@@ -343,6 +351,10 @@ class Node:
 						m1_3_o in node_moves or
 						m2_3_o in node_moves or
 						m3_3_o in node_moves)):
+						if (m1_3_o in node_moves or
+							m2_3_o in node_moves or
+							m3_3_o in node_moves):
+							print("bloqueado")
 						if player == "2":
 							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":
@@ -376,6 +388,10 @@ class Node:
 						m1_4_o in node_moves or
 						m2_4_o in node_moves or
 						m3_4_o in node_moves)):
+						if (m1_4_o in node_moves or
+							m2_4_o in node_moves or
+							m3_4_o in node_moves):
+							print("bloqueado")
 						if player == "2":
 							utility = utility + self.emitUValue(piece_counter)
 						elif player == "1":

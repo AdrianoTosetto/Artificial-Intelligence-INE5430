@@ -2,7 +2,6 @@ from tree import Node
 from move import Move
 from random import randint
 from raw_game import RawGame
-import sys
 from tree import Tree
 import random
 from layout import GameLayout
@@ -12,11 +11,7 @@ from threading import Thread
 
 
 gl = None
-app = None
 def func():
-	global app
-	while app is None:
-		print('not ready')
 	app = QApplication(sys.argv)
 	global gl
 	gl = GameLayout()
@@ -24,7 +19,6 @@ def func():
 
 
 if __name__ == "__main__":
-
 	Thread(target=func).start()
 	g = RawGame()
 	who = "2"
@@ -58,7 +52,7 @@ if __name__ == "__main__":
 					curr_node.add_adj(Node(curr_node.get_moves() + [Move("2",x,y)]))
 					curr_node = curr_node.get_adjs()[-1]
 					g.make_move(who,x,y)
-					gl.make_move(gl.currPlayer[0],x,y)
+					gl.make_move(x,y)
 					loop_desperate_measure = 0
 					g.win = g.has_winner(x,y)
 					print(g)
@@ -121,6 +115,8 @@ if __name__ == "__main__":
 					if cadj.get_heuristic() > min_v:
 						min_v = cadj.get_heuristic()
 						possible_nodes = [cadj]
+				if len(possible_nodes) == 0:
+					possible_nodes = possible_nodes + chosen_nodes
 				chosen_node = random.sample(possible_nodes,1)[0]
 				curr_node = chosen_node
 				x = curr_node.get_moves()[-1].x

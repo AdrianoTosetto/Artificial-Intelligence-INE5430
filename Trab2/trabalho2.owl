@@ -37,9 +37,7 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#isUnderclassmanOf">
         <owl:inverseOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#isUpperclassmanOf"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
     </owl:ObjectProperty>
     
 
@@ -47,9 +45,7 @@
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#isUpperclassmanOf -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#isUpperclassmanOf">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
     </owl:ObjectProperty>
     
 
@@ -84,11 +80,21 @@
     
 
 
+    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#playsNothingBut -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#playsNothingBut">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#plays"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Instrumento"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#talksTo -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#talksTo">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ReflexiveProperty"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Pessoa"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Pessoa"/>
     </owl:ObjectProperty>
@@ -118,6 +124,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Pessoa"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Professor"/>
     </owl:Class>
     
 
@@ -125,6 +132,15 @@
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Baixos -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Baixos">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Baixos_de_Corda"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Eufonios"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tubas"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico"/>
     </owl:Class>
     
@@ -148,6 +164,11 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinetes">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico"/>
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinetes_Baixo_Bb"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinetes_Bb"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinetes_Eb"/>
+        </owl:disjointUnionOf>
     </owl:Class>
     
 
@@ -234,6 +255,10 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Flautas">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico"/>
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Flautas_C"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Flautins"/>
+        </owl:disjointUnionOf>
     </owl:Class>
     
 
@@ -279,6 +304,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Lideres">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Regente"/>
     </owl:Class>
     
 
@@ -302,20 +328,34 @@
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico">
-        <owl:equivalentClass>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#plays"/>
-                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Instrumento"/>
-            </owl:Restriction>
-        </owl:equivalentClass>
         <rdfs:subClassOf>
             <owl:Class>
                 <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
                     <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Professor"/>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#plays"/>
+                                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Instrumento"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
                 </owl:unionOf>
             </owl:Class>
         </rdfs:subClassOf>
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Baixos"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinetes"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Flautas"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#PalhetasDuplas"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Percussao"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Regente"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saxofones"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trombones"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompas"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompetes"/>
+        </owl:disjointUnionOf>
     </owl:Class>
     
 
@@ -354,6 +394,10 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#PalhetasDuplas">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico"/>
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Fagotes"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Oboes"/>
+        </owl:disjointUnionOf>
     </owl:Class>
     
 
@@ -407,6 +451,11 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saxofones">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico"/>
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saxofones_Alto_Eb"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saxofones_Baritono_Eb"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saxofones_Tenor_Bb"/>
+        </owl:disjointUnionOf>
     </owl:Class>
     
 
@@ -473,7 +522,7 @@
         <owl:equivalentClass>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#playsInBand"/>
-                <owl:hasValue rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Sinfonica"/>
+                <owl:hasValue rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_F"/>
             </owl:Restriction>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico"/>
@@ -610,27 +659,16 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Akiko_Oumae -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Akiko_Oumae">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Pessoa"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Akiko_Yoshizawa -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Akiko_Yoshizawa">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aoi_Saitou -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aoi_Saitou">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-        <plays rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saxofone_Tenor"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Musico"/>
+        <likes rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kumiko_Oumae"/>
+        <likes rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shuuichi_Tsukamoto"/>
+        <playsNothingBut rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saxofone_Tenor"/>
+        <talksTo rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kumiko_Oumae"/>
+        <talksTo rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shuuichi_Tsukamoto"/>
     </owl:NamedIndividual>
     
 
@@ -640,6 +678,7 @@
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Asuka_Tanaka">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Lideres"/>
+        <plays rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Eufonio"/>
     </owl:NamedIndividual>
     
 
@@ -653,34 +692,9 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Bombardino -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Bombardino">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Metal"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Eufonio"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Chieri_Takahisa -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Chieri_Takahisa">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Chikai_Maki -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Chikai_Maki">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Chikao_Takigawa -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Chikao_Takigawa">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
@@ -690,7 +704,6 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Baixo">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#PalhetaSimples"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarone"/>
     </owl:NamedIndividual>
     
 
@@ -699,7 +712,6 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Bb">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#PalhetaSimples"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Soprano"/>
     </owl:NamedIndividual>
     
 
@@ -707,31 +719,6 @@
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Eb -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Eb">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#PalhetaSimples"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Piccolo"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Piccolo -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Piccolo">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#PalhetaSimples"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Soprano -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarinete_Soprano">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#PalhetaSimples"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarone -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Clarone">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#PalhetaSimples"/>
     </owl:NamedIndividual>
     
@@ -773,7 +760,6 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Flautim">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Flauta"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Piccolo"/>
     </owl:NamedIndividual>
     
 
@@ -812,14 +798,6 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Hiroe_Hashi -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Hiroe_Hashi">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Hirone_Torizuka -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Hirone_Torizuka">
@@ -840,22 +818,6 @@
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Hitoshi_Usui -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Hitoshi_Usui">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Hiyoko_Ueda -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Hiyoko_Ueda">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Junichi_Takino -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Junichi_Takino">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
@@ -895,39 +857,6 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Keina_Iwata -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Keina_Iwata">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kentarou_Oumae -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kentarou_Oumae">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Pessoa"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kiriko_Miya -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kiriko_Miya">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Knuckle -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Knuckle">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Narai_Tanabe"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kohaku_Kawashima -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kohaku_Kawashima">
@@ -954,14 +883,6 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kyouko_Mihara -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Kyouko_Mihara">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Lala_Hitomi -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Lala_Hitomi">
@@ -973,14 +894,6 @@
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Maina_Kase -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Maina_Kase">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Maki_Akamatsu -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Maki_Akamatsu">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
@@ -1004,22 +917,6 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Masako_Sakai -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Masako_Sakai">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Mei_Taura -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Mei_Taura">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Meiko_Oda -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Meiko_Oda">
@@ -1032,14 +929,6 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Michie_Matsumoto">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Professor"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Michiyo_Morimoto -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Michiyo_Morimoto">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
 
@@ -1098,7 +987,6 @@
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Noboru_Taki">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Professor"/>
         <plays rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trombone"/>
-        <plays rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Sinfonica"/>
     </owl:NamedIndividual>
     
 
@@ -1128,14 +1016,6 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Piccolo -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Piccolo">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Flauta"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Raimu_Okamoto -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Raimu_Okamoto">
@@ -1161,22 +1041,6 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Rie_Shima -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Rie_Shima">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Riko_Nagase -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Riko_Nagase">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saki_Kayama -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Saki_Kayama">
@@ -1185,33 +1049,9 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sakiko_Suzuka -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sakiko_Suzuka">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sana_Kasano -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sana_Kasano">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sapphire_Kawashima -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sapphire_Kawashima">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sari_Takahashi -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sari_Takahashi">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
@@ -1270,35 +1110,19 @@
     
 
 
+    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Serina_Hiragi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Serina_Hiragi">
+        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
+        <likes rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Azusa_Sasaki"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shindo_Masakazu -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shindo_Masakazu">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
         <plays rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Eufonio"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shinobu_Morita -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shinobu_Morita">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shirabe_Inoue -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shirabe_Inoue">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shouko_Hagiwara -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shouko_Hagiwara">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
 
@@ -1307,6 +1131,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Shuuichi_Tsukamoto">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trombones"/>
         <plays rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trombone"/>
         <plays rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_F"/>
     </owl:NamedIndividual>
@@ -1317,22 +1142,6 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sousafone">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Metal"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sugami_Tanaka -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sugami_Tanaka">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sumiko_Hirao -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Sumiko_Hirao">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
 
@@ -1349,14 +1158,6 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Timpano">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#dePercussao"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tomoe_Kabe -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tomoe_Kabe">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
 
@@ -1381,25 +1182,6 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_F">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Metal"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Francesa"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Sinfonica"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Francesa -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Francesa">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Metal"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Sinfonica"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Sinfonica -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Trompa_Sinfonica">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Metal"/>
     </owl:NamedIndividual>
     
 
@@ -1415,14 +1197,6 @@
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tsubame_Kamaya -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tsubame_Kamaya">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tsubomi_Nakano -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tsubomi_Nakano">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
@@ -1444,33 +1218,9 @@
     
 
 
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tuba-kun -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Tuba-kun">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Pessoa"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Yoriko_Souga -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Yoriko_Souga">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Youko_Matsuzaki -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Youko_Matsuzaki">
-        <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Yumina_Ouguchi -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Yumina_Ouguchi">
         <rdf:type rdf:resource="http://www.semanticweb.org/tosetto/ontologies/2018/3/untitled-ontology-5#Aluno"/>
     </owl:NamedIndividual>
     
